@@ -1,0 +1,119 @@
+<template>
+    <v-container fluid fill-height class="home-background" style="max-height: 100vh;">
+        <v-layout justify-center align-center column pa-5>
+            <h3>为临床试验招募患者受试者、健康志愿者和发布临床项目</h3>
+
+
+            <v-container>
+                <v-layout row>
+                    <v-flex md4>
+                        <v-card class="mx-auto" max-width="344" raised>
+                            <v-img src="../assets/healthy.jpg" height="200px"></v-img>
+                            <v-card-title>健康志愿者</v-card-title>
+                            <v-card-subtitle>参与临床试验，推动世界医学进步</v-card-subtitle>
+                            <v-card-actions>
+                                <router-link
+                                        to="/healthy"
+                                        tag="v-btn"
+                                >
+                                <v-btn color="teal"  outlined>报名</v-btn>
+                                </router-link>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>
+
+
+
+                    <v-flex md4>
+                        <v-card
+                                class="mx-auto"
+                                max-width="344"
+                                raised
+                        >
+                            <v-img
+                                    src="../assets/patient.jpg"
+                                    height="200px"
+                            ></v-img>
+
+                            <v-card-title>
+                                患者
+                            </v-card-title>
+
+                            <v-card-subtitle>
+                                尝试新药物或新疗法，获得改善疾病的机会
+                            </v-card-subtitle>
+
+                            <v-card-actions>
+                                <router-link
+                                        to="/patient"
+                                        tag="v-btn"
+                                >
+                                <v-btn color="teal"  outlined>报名</v-btn>
+                                </router-link>
+                            </v-card-actions>
+
+
+                        </v-card>
+                    </v-flex>
+
+
+
+
+                    <v-flex md4>
+                        <v-card
+                                class="mx-auto"
+                                max-width="344"
+                                raised
+                        >
+                            <v-img
+                                    src="../assets/registration.jpg"
+                                    height="200px"
+                            ></v-img>
+
+                            <v-card-title>
+                                发布临床项目
+                            </v-card-title>
+
+                            <v-card-subtitle>
+                                借助受试者数据库，大大提高招募效率
+                            </v-card-subtitle>
+
+                            <v-card-actions>
+                                <router-link
+                                        to="/publish"
+                                        tag="v-btn"
+                                >
+                                <v-btn color="teal"  outlined>发布</v-btn>
+                                </router-link>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+
+        </v-layout>
+    </v-container>
+</template>
+
+<script>
+    export default {
+        name: "HomeBackground"
+    }
+</script>
+
+
+<style scoped>
+
+    .home-background {
+        background: url('../assets/home-background.jpg');
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        color:teal;
+    }
+
+    .home-background h3 {
+        font-size: 40px;
+    }
+
+</style>
