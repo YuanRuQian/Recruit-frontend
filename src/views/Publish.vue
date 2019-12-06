@@ -41,7 +41,7 @@
                                         label="实验药物名称"
                                         ref="drugName"
                                         v-model="drugName"
-                                        prepend-icon="mdi-check"
+                                        prepend-icon="mdi-opacity"
                                         type="text"
                                         :rules="[() => !!drugName || '请填写完整信息!']"
                                         :error-messages="实验药物名称出错"
@@ -97,7 +97,6 @@
                             json :
                                 {
                                     userName: this.store.state.username,
-                                    userPwd: this.store.state.password,
                                     ProgramName : this.programName,
                                     State:this.ClinicalState,
                                     DrugName:this.drugName,

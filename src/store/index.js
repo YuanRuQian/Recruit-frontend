@@ -6,6 +6,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    currentUser:null,
+    currentIdentity:null,
+    currentType:null
+
   },
   mutations: {
 

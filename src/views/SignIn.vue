@@ -59,24 +59,60 @@
         },
         methods: {
             UserLogIn : function () {
-
-
                 this.axios.post('http://47.100.227.73:8080/login',{json :
                         {
                             userName: this.username,
                             userPwd: this.password,
                         }}).then((response) => {
+
                     console.log(response);
-                    this.store.state.username = this.username;
-                    this.store.state.password = this.password;
+
                     // 'res':(登陆成功与否 0不存在该用户 1存在该用户密码错误 2登陆成功),
                     // 'type':(登录人员类型（如果登陆失败,type为空,否则type有值 其中 0病人 1健康人 2机构）)
-                    switch (parseInt(response)) {
-                        case 0 : alert('发布失败 TAT');
+
+                    var prompt='';
+
+                    // flag 为路标变量 指向需要导航跳转到的页面
+
+
+                    // prompt 用于记录登陆成功与否/登陆人员类型 将显示在弹窗里
+                    switch (parseInt(response.res)) {
+                        case 0 : prompt+='不存在该用户 δ(´д｀; )'; alert(prompt);
                             break;
-                        case 1 : alert('发布成功！');
+                        case 1 : prompt+='用户密码错误 (-_-)ゞ゛'; alert(prompt);
                             break;
-                        default : alert('哎呀！出错了 QAQ');
+                        case 2 : prompt+='登陆成功 (*•̀ᴗ•́*)و';
+                            break;
+                        default : prompt+='有地方出错了 ｢(ﾟﾍﾟ)'; alert(prompt);
+                    }
+
+                    switch (parseInt(response.type)) {
+                        case 0 : prompt+='欢迎，患者受试者 ◝( ′ㅂ`)و ̑̑';
+                            break;
+                        case 1 : prompt+='欢迎您，健康受试者 (๑˃̵ᴗ˂̵)و';
+                            break;
+                        case 2 : prompt+='欢迎您，发布机构 ଘ꒰ ๑ ˃̶ ᴗ ᵒ̴̶̷๑꒱و ';
+                            break;
+                        default : prompt+='又有地方出错了 「(°ヘ°)'; alert(prompt);
+                    }
+
+                    // 若登陆成功，跳转到用户身份对应的页面
+
+                    if(parseInt(response.res)===2)
+                    {
+                        switch (parseInt(response.type)) {
+                            case 0 : this.$router.push('/patient');
+                                alert(prompt);
+                                break;
+                            case 1 : this.$router.push('/healthy');
+                                alert(prompt);
+                                break;
+                            case 2 : this.$router.push('/publish');
+                                alert(prompt);
+                                break;
+                            default : prompt+='又有地方出错了 「(°ヘ°)'; alert(prompt);
+                        }
+
                     }
 
 

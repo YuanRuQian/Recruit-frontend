@@ -1,21 +1,28 @@
 <template>
-    <v-app id="inspire" @load="ProgramForHealthy">
+    <v-app id="inspire"  >
         <v-content>
             <v-container
                     class="fill-height healthy-background"
                     fluid
             >
-                <v-card>
-                    <div
-                            v-for="currency in info"
-                            class="currency"
-                            v-bind:key="currency.id"
+
+                <v-card class="healthy-data-table">
+                    <v-card-title>
+                        健康受试者项目一览
+                        <v-spacer></v-spacer>
+                        <v-text-field
+                                v-model="search"
+                                label="Search"
+                                single-line
+                                hide-details
+                        ></v-text-field>
+                    </v-card-title>
+                    <v-data-table
+                            :headers="headers"
+                            :items="info"
+                            class="elevation-1"
                     >
-                        {{ currency.description }}:
-                        <span class="lighten">
-      <span v-html="currency.symbol"></span>{{ currency.rate_float | currencydecimal }}
-    </span>
-                    </div>
+                    </v-data-table>
                 </v-card>
             </v-container>
         </v-content>
@@ -26,36 +33,106 @@
 
     export default {
         name: "healthy",
-        created() {
-            console.log('Component is created')
-        },
-        mounted() {
-            console.log('Component is mounted');
-            this.axios
-                .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-                .then(response => (this.info = response.data.bpi))
-                .catch(error => console.log(error));
-        },
         data () {
             return {
                 search: '',
-                bpi: []
+                info:[],
+                headers: [
+                    { text: '项目名称', value: '' },
+                    { text: '药物', value: '' },
+                    { text: '适应症', value: '' },
+                    { text: '招募人数', value: '' },
+                    { text: '起始日期', value: '' },
+                    { text: '截止日期', value: '' },
+                ],
             }
         },
+
+
 
         filters: {
-            currencydecimal (value) {
-                return value.toFixed(2)
+            IndexToDisease (value){
+
+                const bindings = new Map([
+                    // tblDiseaseType.json
+                    [
+                        0,['无疾病']
+                    ],
+                    [
+                        1,['某些传染病和寄生虫病']
+                    ],
+                    [
+                        2,['肿瘤']
+                    ],
+                    [
+                        3,['血液及造血器官疾病和某些涉及免疫机制的疾患']
+                    ],
+                    [
+                        4,['内分泌营养和代谢疾病']
+                    ],
+                    [
+                        5,['精神和行为障碍']
+                    ],
+                    [
+                        6,['神经系统疾病']
+                    ],
+                    [
+                        7,['眼和附器疾病']
+                    ],
+                    [
+                        8,['耳和乳突疾病']
+                    ],
+                    [
+                        9,['循环系统疾病']
+                    ],
+                    [
+                        10,['呼吸系统疾病']
+                    ],
+                    [
+                        11,['消化系统疾病']
+                    ],
+                    [
+                        12,['皮肤和皮下组织疾病']
+                    ],
+                    [
+                        13,['肌肉骨骼和结缔组织疾病']
+                    ],
+                    [
+                        14,['泌尿生殖系统疾病']
+                    ],
+                    [
+                        15,['妊娠、分娩和产褥期']
+                    ],
+                    [
+                        16,['起源于围生期的某些情况']
+                    ],
+                    [
+                        17,['先天畸形、变形和染色体异常']
+                    ],
+                    [
+                        18,['不可归他类处']
+                    ]
+
+                ]);
+
+                let binding = bindings.get(value);
+                return binding[0];
+
             }
         },
 
+        mounted() {
+            this.ProgramForHealthy();
+            this.arr = Object.values(this.info);
+
+        },
         methods: {
             ProgramForHealthy :function() {
-                console.log('test');
-                this.axios
+                this.$http
                     .get('https://api.coindesk.com/v1/bpi/currentprice.json')
                     .then(response => (this.info = response.data.bpi))
                     .catch(error => console.log(error));
+
 
 
                 /*this.axios.post('http://47.100.227.73:8080/publish',
@@ -92,26 +169,12 @@
 
 
 <style scoped>
-    square {
-        background-color: blue;
-        color: #fff;
-        margin: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+
+    .healthy-data-table{
+        width: 80%;
+        margin: auto;
     }
-    .small {
-        width: 100px;
-        height: 100px;
-    }
-    .medium {
-        width: 200px;
-        height: 200px;
-    }
-    .large {
-        width: 300px;
-        height: 300px;
-    }
+
 
     .healthy-background {
         background: url('../assets/healthy-background.jpg');
