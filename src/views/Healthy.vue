@@ -129,8 +129,6 @@
 
                 this.axios.post('${api}/publish',
                     {
-                        json :
-                            {
                                 userName: this.store.state.username,
                                 userPwd: this.store.state.password,
                                 ProgramName : this.programName,
@@ -138,12 +136,12 @@
                                 DrugName:this.drugName,
                                 DiseaseType:this.diseaseType,
                                 AdaptationDisease:this.ApplicationDisease,
-                            }
+
                     }).then((response) => {
                     console.log(response);
 
                     //  @return 0发布失败 1发布成功
-                    switch (parseInt(response)) {
+                    switch (parseInt(response.data)) {
                         case 0 : alert('发布失败 TAT');
                             break;
                         case 1 : alert('发布成功！');

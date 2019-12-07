@@ -18,6 +18,11 @@ const routes = [
     component :()=> import('../views/ShowDiseaseDetails.vue'),
   },
   {
+    path:'/volunteer',
+    name: 'volunteer',
+    component :()=> import('../views/ShowVolunteerDetails.vue'),
+  },
+  {
     path: '/menu',
     name: 'menu',
     component: () => import('../views/Menu.vue'),

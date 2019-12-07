@@ -298,25 +298,28 @@
                         {
                             username: this.username,
                             userpwd: this.password,
-                            "tblvolunteer": {
-                                "volunteername": this.realname,
-                                "sex": this.gender,
-                                "birthday": this.birthday,
-                                "diseasetypeId": this.$options.filters.DiseaseToIndex(this.disease),
-                                "diseasedetial": this.diseasedetail,
-                                "tel": this.tel,
-                                "address": this.address
+                            tblvolunteer : {
+                                volunteername: this.realname,
+                                sex: this.gender,
+                                birthday: this.birthday,
+                                diseasetypeId: this.$options.filters.DiseaseToIndex(this.disease),
+                                diseasedetial: this.diseasedetail,
+                                tel: this.tel,
+                                address: this.address
                             }
                         }
                     ).then((response) => {
-                        this.info = response
+                        this.info = response;
+                        switch ( this.$options.filters.DiseaseToIndex(this.disease))
+                        {
+                            case 0: this.$router.push('healthy');break;
+                            default : this.$router.push('patient');break;
+                        }
                     });
                 },
 
                 AuthorityRegister: function () {
                     this.axios.get('?',
-
-
                         {
                             userName: this.username2,
                             userPwd: this.password2,
@@ -325,25 +328,9 @@
                         }
                     ).then((response) => {
                         this.currentType = response;
-                        switch (parseInt(this.currentType)) {
-                            case 0 :
-                                alert('登陆失败!');
-                                break;
-                            case 1 :
-                                alert('欢迎您！志愿者！');
-                                break;
-                            case 2 :
-                                alert('欢迎您！发布机构！');
-                                break;
-                            default :
-                                alert('哎呀！有东西出错了 QAQ')
-
-                        }
+                        this.$router.push({name:'publish'});
                     });
                 },
-
-
-
             },
         }
 

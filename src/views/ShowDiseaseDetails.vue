@@ -1,52 +1,72 @@
 <template>
-    <div class="text-center">
-        <v-dialog
-                v-model="dialog"
-                width="500"
+    <div>
+        <v-card
+                class="mx-auto"
+                max-width="80%"
         >
-            <template v-slot:activator="{ on }">
-                <v-btn
-                        color="primary"
-                        dark
-                        v-on="on"
-                >
-                    Click Me {{this.$route.params.id}}
-                </v-btn>
-            </template>
-
-            <v-card>
-                <v-card-title
-                        class="headline grey lighten-2"
-                        primary-title
-                >
-
-                </v-card-title>
-
-                <v-card-text>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                            color="primary"
-                            text
-                            @click="SignMeUp"
-                    >
-                        我要报名
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <v-alert
+                dense
+                text
+                type="success"
+        >
+            项目名称:{{detailsInfo.programname}}
+        </v-alert>
+        <v-alert
+                dense
+                text
+                type="success"
+        >
+            药物:{{detailsInfo.drugname}}
+        </v-alert>
+        <v-alert
+                dense
+                text
+                type="success"
+        >
+            适应症:{{detailsInfo.adaptationdisease}}
+        </v-alert>
+        <v-alert
+                dense
+                text
+                type="success"
+        >
+            招募人数:{{detailsInfo.totalnumberpeople}}
+        </v-alert>
+        <v-alert
+                dense
+                text
+                type="success"
+        >
+            起始日期:{{detailsInfo.starttime}}
+        </v-alert>
+        <v-alert
+                dense
+                text
+                type="success"
+        >
+            截止日期:{{detailsInfo.endtime}}
+        </v-alert>
+            <div class="text-xs-center">
+                    <v-btn color="teal" @click="SignMeUp" outlined>我要报名</v-btn>
+            </div>
+        </v-card>
     </div>
 </template>
 
 <script>
     export default {
         name: "details",
+        data(){
+            return {
+                detailsInfo:''
+            }
+        },
         mounted() {
-            this.axios.post('?',{ programid:this.$route.params.id}).
+            this.axios.post('?',
+                {
+                    programid:this.$route.params.id,
+                    username:this.store.state.username,
+                }).
             then((response) =>
             {
                 console.log(response);
@@ -61,7 +81,7 @@
                 this.axios.post('?',{ programid:this.$route.params.id,username:this.store.state.username}).
                 then((response) =>
                 {
-                    if(response===true) {alert('恭喜您，报名成功！')}
+                    if(response.data===true) {alert('恭喜您，报名成功！')}
                     else {alert('对不起，报名失败……')}
                 })},
             },
@@ -72,5 +92,7 @@
 </script>
 
 <style scoped>
-
+        .v-card {
+            padding:25px;
+        }
 </style>

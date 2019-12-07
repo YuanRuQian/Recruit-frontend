@@ -5,7 +5,6 @@
                     class="fill-height publish-background"
                     fluid style="max-height: 100vh;"
             >
-
                 <v-card class="general-frame">
                     <v-toolbar flat color="teal" dark>
                         <v-toolbar-title>项目注册</v-toolbar-title>
@@ -96,12 +95,12 @@
                         {
                             json :
                                 {
-                                    userName: this.store.state.username,
-                                    ProgramName : this.programName,
-                                    State:this.ClinicalState,
-                                    DrugName:this.drugName,
-                                    DiseaseType:this.diseaseType,
-                                    AdaptationDisease:this.ApplicationDisease,
+                                    username: this.store.state.username,
+                                    programname : this.programName,
+                                    state:this.ClinicalState,
+                                    drugname:this.drugName,
+                                    diseasetype:this.diseaseType,
+                                    adaptationdisease:this.ApplicationDisease,
                                 }
                         }).then((response) => {
                             console.log(response);

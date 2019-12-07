@@ -93,27 +93,25 @@
 
                     // 若登陆成功，跳转到用户身份对应的页面
 
-                    if(parseInt(response.res)===2)
+                    if(parseInt(response.data.res)===2)
                     {
-                        switch (parseInt(response.type)) {
-                            case 0 : this.$router.push('/patient');
+                        switch (parseInt(response.data.type)) {
+                            case 0 : this.$router.push({name:'patient'});
                                 break;
-                            case 1 : this.$router.push('/healthy');
+                            case 1 : this.$router.push({name:'healthy'});
                                 break;
-                            case 2 : this.$router.push('/publish');
+                            case 2 : this.$router.push({name:'publish'});
                                 break;
-                            default : this.prompt+='有地方出错了 「(°ヘ°)';
                         }
 
                     }
                     else
                         {
-                            switch (parseInt(response.res)) {
+                            switch (parseInt(response.data.res)) {
                                 case 0 : this.prompt+='不存在该用户 δ(´д｀; )';
                                     break;
                                 case 1 : this.prompt+='用户密码错误 (-_-)ゞ゛';
                                     break;
-                                default : this.prompt+='又有地方出错了 ｢(ﾟﾍﾟ)';
                             }
                     }
 
