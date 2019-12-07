@@ -2,7 +2,9 @@
 <v-container fluid>
     <v-layout>
         <v-card class="dessert-table">
-            <router-view></router-view>
+
+                <router-view></router-view>
+
             <v-card-title>
                 <v-text-field
                         v-model="search"
@@ -21,7 +23,7 @@
                             :headers="headers"
                             :items="desserts"
                             :search="search"
-                            @click:row="showModalEachRow"
+                            @click:row="showDeatilsEachRow"
                             v-on="on"
                     >
                     </v-data-table>
@@ -137,8 +139,14 @@
             }
         },
         methods:{
-            showModalEachRow: function (value) {
-                alert(value.name+'\n'+value.calories);
+            showDeatilsEachRow : function (value) {
+
+                this.$router.push({
+                    name: 'details',
+                    params: {
+                        id: value.name
+                    }
+                })
             }
 
         }

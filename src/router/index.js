@@ -4,10 +4,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter);
 
-// 懒路由加载
-const DiseaseDetailsCard = {
-  template: '<div><h1>666</h1></div>'
-};
+
 
 const routes = [
   {
@@ -22,8 +19,8 @@ const routes = [
     children:
     [
       {
-          path: 'details',
-          component : DiseaseDetailsCard,
+          path: '/menu/details',
+          component :()=> import('../views/Join.vue'),
       }
     ]
   },
