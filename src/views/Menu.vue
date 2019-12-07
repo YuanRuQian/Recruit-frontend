@@ -1,20 +1,21 @@
 <template>
-    <v-container fluid>
-        <v-layout>
-                <v-card class="dessert-table">
-                    <v-card-title>
-                        <v-text-field
-                                v-model="search"
-                                label="Search"
-                                single-line
-                                hide-details
-                        ></v-text-field>
-                    </v-card-title>
-                    <v-dialog
-                            v-model="dialog"
-                            width="500"
-                    >
-                        <template v-slot:activator="{ on }">
+<v-container fluid>
+    <v-layout>
+        <v-card class="dessert-table">
+            <router-view></router-view>
+            <v-card-title>
+                <v-text-field
+                        v-model="search"
+                        label="Search"
+                        single-line
+                        hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-dialog
+                    v-model="dialog"
+                    width="500"
+            >
+                <template v-slot:activator="{ on }">
                     <v-data-table
                             id="data_tbl"
                             :headers="headers"
@@ -24,16 +25,14 @@
                             v-on="on"
                     >
                     </v-data-table>
-                        </template>
-                    </v-dialog>
-                </v-card>
-        </v-layout>
-    </v-container>
+                </template>
+            </v-dialog>
+        </v-card>
+    </v-layout>
+</v-container>
 </template>
 
 <script>
-
-    import {bus} from '../main'
 
     export default {
         name: 'menu',
@@ -140,18 +139,14 @@
         methods:{
             showModalEachRow: function (value) {
                 alert(value.name+'\n'+value.calories);
-            },
-            openMyDialog () {
-                bus.$emit('dialog', true) // emit the event to the bus
             }
+
         }
     };
 </script>
 <style scoped>
-
     .dessert-table {
         margin:auto;
     }
 </style>
-
 

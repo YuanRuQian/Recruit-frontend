@@ -66,11 +66,12 @@
                                     required
                             />
 
-                            <v-text-field
-                                    label="所患疾病"
+                            <v-autocomplete
+                                    label="所患疾病类型"
                                     ref="disease"
                                     id="disease"
                                     v-model="disease"
+                                    :items ="allDiseases"
                                     prepend-icon="mdi-opacity"
                                     type="text"
                                     :rules="[() => !!disease || '请填写完整信息!']"
@@ -79,7 +80,7 @@
                             />
 
                             <v-text-field
-                                    label="所患疾病"
+                                    label="所患疾病细节"
                                     ref="diseasedetail"
                                     id="diseasedetail"
                                     v-model="diseasedetail"
@@ -130,6 +131,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer />
+<!--                        {{birthday}}-->
                         <v-btn color="primary" @click="UserRegister">注册</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -210,61 +212,137 @@
         data: () => ({
             gender: ['男', '女', '其他'],
             provinces: ['北京市', '天津市', '上海市', '重庆市', '河北省', '山西省', '辽宁省', '吉林省', '黑龙江省', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省', '河南省', '湖北省', '湖南省', '广东省', '海南省', '四川省', '贵州省', '云南省', '陕西省', '甘肃省', '青海省', '台湾省', '内蒙古自治区', '广西壮族自治区', '西藏自治区', '宁夏回族自治区', '新疆维吾尔自治区', '香港特别行政区', '澳门特别行政区'],
-
+            allDiseases :['无疾病','某些传染病和寄生虫病','肿瘤' ,'血液及造血器官疾病和某些涉及免疫机制的疾患' ,'内分泌营养和代谢疾病' ,'精神和行为障碍' ,'神经系统疾病','眼和附器疾病','耳和乳突疾病' ,'循环系统疾病' ,'呼吸系统疾病','消化系统疾病' ,'皮肤和皮下组织疾病','肌肉骨骼和结缔组织疾病','泌尿生殖系统疾病','妊娠、分娩和产褥期' ,'起源于围生期的某些情况','先天畸形、变形和染色体异常' ,'不可归他类处' ],
         }),
-        methods: {
-            UserRegister: function ur(event) {
-                event.preventDefault();
+        filters: {
+            DiseaseToIndex(value) {
+                const bindings = new Map([
+                    // tblDiseaseType.json
+                    [
+                        '无疾病', [0]
+                    ],
+                    [
+                        '某些传染病和寄生虫病', [1]
+                    ],
+                    [
+                        '肿瘤', [2]
+                    ],
+                    [
+                        '血液及造血器官疾病和某些涉及免疫机制的疾患', [3]
+                    ],
+                    [
+                        '内分泌营养和代谢疾病', [4]
+                    ],
+                    [
+                        '精神和行为障碍', [5]
+                    ],
+                    [
+                        '神经系统疾病', [6]
+                    ],
+                    [
+                        '眼和附器疾病', [7]
+                    ],
+                    [
+                        '耳和乳突疾病', [8]
+                    ],
+                    [
+                        '循环系统疾病', [9]
+                    ],
+                    [
+                        '呼吸系统疾病', [10]
+                    ],
+                    [
+                        '消化系统疾病', [11]
+                    ],
+                    [
+                        '皮肤和皮下组织疾病', [12]
+                    ],
+                    [
+                        '肌肉骨骼和结缔组织疾病', [13]
+                    ],
+                    [
+                        '泌尿生殖系统疾病', [14]
+                    ],
+                    [
+                        '妊娠、分娩和产褥期', [15]
+                    ],
+                    [
+                        '起源于围生期的某些情况', [16]
+                    ],
+                    [
+                        '先天畸形、变形和染色体异常', [17]
+                    ],
+                    [
+                        '不可归他类处', [18]
+                    ]
 
-                this.axios.post('http://47.100.227.73:8080/register/volunteer',
-                    {
-                        params:
-                            {
-                                register :
-                                    {
-                                        userName : this.username,
-                                        userPwd : this.password,
-                                        VolunteerName:this.realname,
-                                        Sex:this.gender,
-                                        Birthday:this.birthday,
-                                        DiseaseType:this.disease,
-                                        DiseaseDetial:this.diseasedetail,
-                                        Tel:this.tel,
-                                        Address:this.address
-                                    }
-                            }
-                    }).then((response) => {
-                    this.info=response
-                });
+                ]);
+
+                let binding = bindings.get(value);
+                return binding[0];
+              }
             },
 
-        AuthorityRegister: function () {
-        this.axios.get('?',
-            {
-                register :
-                    {
-                        userName : this.username2,
-                        userPwd : this.password2,
-                        Organization: this.authority,
-                        Tel:this.tel2,
-                    }
+            methods: {
 
-            }).then((response) => {
-            this.currentType = response;
-            switch (parseInt(this.currentType)) {
-                case 0 : alert('登陆失败!');
-                break;
-                case 1 : alert('欢迎您！志愿者！');
-                break;
-                case 2 : alert('欢迎您！发布机构！');
-                break;
-                default : alert('哎呀！有东西出错了 QAQ')
 
-            }
-        });
-    },
+                UserRegister: function () {
+
+
+
+                    this.axios.post('register/volunteer',
+                        {
+                            username: this.username,
+                            userpwd: this.password,
+                            "tblvolunteer": {
+                                "volunteername": this.realname,
+                                "sex": this.gender,
+                                "birthday": this.birthday,
+                                "diseasetypeId": this.$options.filters.DiseaseToIndex(this.disease),
+                                "diseasedetial": this.diseasedetail,
+                                "tel": this.tel,
+                                "address": this.address
+                            }
+                        }
+                    ).then((response) => {
+                        this.info = response
+                    });
+                },
+
+                AuthorityRegister: function () {
+                    this.axios.get('?',
+
+
+                        {
+                            userName: this.username2,
+                            userPwd: this.password2,
+                            Organization: this.authority,
+                            Tel: this.tel2,
+                        }
+                    ).then((response) => {
+                        this.currentType = response;
+                        switch (parseInt(this.currentType)) {
+                            case 0 :
+                                alert('登陆失败!');
+                                break;
+                            case 1 :
+                                alert('欢迎您！志愿者！');
+                                break;
+                            case 2 :
+                                alert('欢迎您！发布机构！');
+                                break;
+                            default :
+                                alert('哎呀！有东西出错了 QAQ')
+
+                        }
+                    });
+                },
+
+
+
+            },
         }
-    }
+
 
 
 </script>

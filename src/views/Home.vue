@@ -1,7 +1,6 @@
 <template>
     <span>
         <home-background></home-background>
-
     </span>
 </template>
 

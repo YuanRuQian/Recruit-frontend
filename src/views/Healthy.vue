@@ -128,14 +128,11 @@
         },
         methods: {
             ProgramForHealthy :function() {
-                this.$http
-                    .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-                    .then(response => (this.info = response.data.bpi))
-                    .catch(error => console.log(error));
 
 
 
-                /*this.axios.post('http://47.100.227.73:8080/publish',
+
+                this.axios.post('${api}/publish',
                     {
                         json :
                             {
@@ -159,7 +156,6 @@
                         default : alert('哎呀！不知道哪里出错了 QAQ');
                     }
                 });
-*/
 
 
             }

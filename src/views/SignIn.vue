@@ -59,11 +59,11 @@
         },
         methods: {
             UserLogIn : function () {
-                this.axios.post('http://47.100.227.73:8080/login',{json :
+                this.axios.post('http://10.7.35.156:8000/api/login',
                         {
                             userName: this.username,
                             userPwd: this.password,
-                        }}).then((response) => {
+                        }).then((response) => {
 
                     console.log(response);
 
@@ -72,10 +72,9 @@
 
                     var prompt='';
 
-                    // flag 为路标变量 指向需要导航跳转到的页面
-
-
                     // prompt 用于记录登陆成功与否/登陆人员类型 将显示在弹窗里
+
+
                     switch (parseInt(response.res)) {
                         case 0 : prompt+='不存在该用户 δ(´д｀; )'; alert(prompt);
                             break;

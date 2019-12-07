@@ -92,7 +92,7 @@
             {
                 PublishProgram: function () {
 
-                    this.axios.post('http://47.100.227.73:8080/publish',
+                    this.axios.post('${api}/publish',
                         {
                             json :
                                 {

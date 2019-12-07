@@ -5,6 +5,9 @@ import Home from '../views/Home.vue'
 Vue.use(VueRouter);
 
 // 懒路由加载
+const DiseaseDetailsCard = {
+  template: '<div><h1>666</h1></div>'
+};
 
 const routes = [
   {
@@ -15,7 +18,14 @@ const routes = [
   {
     path: '/menu',
     name: 'menu',
-    component: () => import('../views/Menu.vue')
+    component: () => import('../views/Menu.vue'),
+    children:
+    [
+      {
+          path: 'details',
+          component : DiseaseDetailsCard,
+      }
+    ]
   },
   {
     path: '/sign-in',
@@ -42,7 +52,7 @@ const routes = [
     name: 'publish',
     component: () => import('../views/Publish.vue')
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
