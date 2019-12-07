@@ -121,11 +121,6 @@
             }
         },
 
-        mounted() {
-            this.ProgramForHealthy();
-            this.arr = Object.values(this.info);
-
-        },
         methods: {
             ProgramForHealthy :function() {
 

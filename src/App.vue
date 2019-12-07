@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <app-navigation></app-navigation>
-
         <v-content transition="slide-x-transition">
             <vue-progress-bar></vue-progress-bar>
             <router-view></router-view>

@@ -3,8 +3,8 @@
     <v-layout>
         <v-card class="dessert-table">
 
-                <router-view></router-view>
 
+                <router-view></router-view>
             <v-card-title>
                 <v-text-field
                         v-model="search"
@@ -37,6 +37,8 @@
 <script>
 
     export default {
+
+
         name: 'menu',
         data () {
             return {
@@ -148,6 +150,7 @@
                     }
                 })
             }
+
 
         }
     };

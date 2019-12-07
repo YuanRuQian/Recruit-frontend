@@ -13,16 +13,22 @@ const routes = [
     component: Home,
   },
   {
+    path:'/details',
+    name: 'details',
+    component :()=> import('../views/ShowDiseaseDetails.vue'),
+  },
+  {
     path: '/menu',
     name: 'menu',
     component: () => import('../views/Menu.vue'),
     children:
-    [
-      {
-          path: '/menu/details',
-          component :()=> import('../views/Join.vue'),
-      }
-    ]
+        [
+          {
+            path:'/menu/details',
+            name: 'details',
+            component :()=> import('../views/ShowDiseaseDetails.vue'),
+          }
+        ]
   },
   {
     path: '/sign-in',
