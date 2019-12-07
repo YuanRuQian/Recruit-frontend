@@ -10,11 +10,13 @@
 
 <script>
     import AppNavigation from '@/components/AppNavigation';
+    import VueProgressBar from 'vue-progressbar'
 
     export default {
         name: 'App',
         components: {
-            AppNavigation
+            AppNavigation,
+            VueProgressBar
         }
     };
 </script>

@@ -23,6 +23,16 @@ const routes = [
     component :()=> import('../views/ShowVolunteerDetails.vue'),
   },
   {
+    path:'/select',
+    name: 'select',
+    component :()=> import('../views/AuthoritySelectVolunteer.vue'),
+  },
+  {
+    path: '/volunteer-table',
+    name: 'volunteer-table',
+    component: () => import('../views/ShowVolunteerProfileTable.vue')
+  },
+  {
     path: '/menu',
     name: 'menu',
     component: () => import('../views/Menu.vue'),
@@ -32,7 +42,12 @@ const routes = [
             path:'/menu/details',
             name: 'details',
             component :()=> import('../views/ShowDiseaseDetails.vue'),
-          }
+          },
+          {
+            path:'/menu/volunteer',
+            name: 'volunteer',
+            component :()=> import('../views/ShowVolunteerDetails.vue'),
+          },
         ]
   },
   {

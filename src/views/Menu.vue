@@ -2,8 +2,6 @@
 <v-container fluid>
     <v-layout>
         <v-card class="dessert-table">
-
-
                 <router-view></router-view>
             <v-card-title>
                 <v-text-field
