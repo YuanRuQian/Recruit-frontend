@@ -20,6 +20,7 @@
                         :headers="headers"
                         :items="allPrograms"
                         class="elevation-1"
+                        @click:row="goToAuthoritySelectVolunteer"
                         loading loading-text="数据加载中……请耐心等待"
                 >
                 </v-data-table>
@@ -134,6 +135,20 @@
                     console.log(response);
                     this.allPrograms = response.data;
                 });
+            },
+
+
+            goToAuthoritySelectVolunteer : function (value) {
+                this.axios.post('${api}/?',
+                    {
+                        programid : value.programid,
+                        selectedvolunteers : this.selected
+
+                    }).then((response) => {
+                    console.log(response);
+                    this.allPrograms = response.data;
+                });
+                this.$router.push({name:'select',params: { programid:value.programid} });
             }
 
         }

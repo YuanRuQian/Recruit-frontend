@@ -294,7 +294,7 @@
 
 
 
-                    this.axios.post('register/volunteer',
+                    this.axios.post('${api}/register/volunteer',
                         {
                             username: this.username,
                             userpwd: this.password,

@@ -13,51 +13,64 @@
                     <v-card class="tab-card">
                         <v-card-text>
                             <v-form>
-                                <v-text-field
-                                        ref="programName"
-                                        v-model="programName"
-                                        id="programName"
-                                        label="项目名称"
-                                        prepend-icon="mdi-star"
-                                        type="text"
-                                        :rules="[() => !!programName || '请填写完整信息!']"
-                                        :error-messages="项目名称错误"
-                                        required
-                                />
-                                <v-text-field
-                                        id="clinicalState"
-                                        label="临床试验状态"
-                                        ref="clinicalState"
-                                        v-model="clinicalState"
-                                        prepend-icon="mdi-hospital"
-                                        type="text"
-                                        :rules="[() => !!clinicalState || '请填写完整信息!']"
-                                        :error-messages="临床试验状态出错"
-                                        required
-                                />
-                                <v-text-field
-                                        id="drugName"
-                                        label="实验药物名称"
-                                        ref="drugName"
-                                        v-model="drugName"
-                                        prepend-icon="mdi-opacity"
-                                        type="text"
-                                        :rules="[() => !!drugName || '请填写完整信息!']"
-                                        :error-messages="实验药物名称出错"
-                                        required
-                                />
-                                <v-autocomplete
-                                        id="diseaseType"
-                                        label="疾病类型"
-                                        ref="diseaseType"
-                                        v-model="diseaseType"
-                                        :items="allDiseases"
-                                        prepend-icon="mdi-circle"
-                                        type="text"
-                                        :rules="[() => !!diseaseType || '请填写完整信息!']"
-                                        :error-messages="疾病类型出错"
-                                        required
-                                />
+                                <v-layout row>
+                                    <v-flex md6>
+                                        <v-text-field
+                                                ref="programName"
+                                                v-model="programName"
+                                                id="programName"
+                                                label="项目名称"
+                                                prepend-icon="mdi-star"
+                                                type="text"
+                                                :rules="[() => !!programName || '请填写完整信息!']"
+                                                :error-messages="项目名称错误"
+                                                required
+                                        />
+                                    </v-flex>
+                                    <v-flex md6>
+                                        <v-text-field
+                                                id="drugName"
+                                                label="实验药物名称"
+                                                ref="drugName"
+                                                v-model="drugName"
+                                                prepend-icon="mdi-opacity"
+                                                type="text"
+                                                :rules="[() => !!drugName || '请填写完整信息!']"
+                                                :error-messages="实验药物名称出错"
+                                                required
+                                        />
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout row>
+                                    <v-flex md6>
+                                        <v-text-field
+                                                id="TotalVolunteers"
+                                                label="需要志愿者人数"
+                                                ref="TotalVolunteers"
+                                                v-model="TotalVolunteers"
+                                                prepend-icon="mdi-opacity"
+                                                type="number"
+                                                :rules="[() => !!TotalVolunteers || '请填写完整信息!']"
+                                                :error-messages="需要志愿者人数"
+                                                required
+                                        />
+                                    </v-flex>
+                                    <v-flex md6>
+                                        <v-autocomplete
+                                                id="diseaseType"
+                                                label="疾病类型"
+                                                ref="diseaseType"
+                                                v-model="diseaseType"
+                                                :items="allDiseases"
+                                                prepend-icon="mdi-circle"
+                                                type="text"
+                                                :rules="[() => !!diseaseType || '请填写完整信息!']"
+                                                :error-messages="疾病类型出错"
+                                                required
+                                        />
+                                    </v-flex>
+                                </v-layout>
+
                                 <v-text-field
                                         id="ApplicationDisease"
                                         label="药物的适应症"
@@ -69,6 +82,47 @@
                                         :error-messages="药物的适应症出错"
                                         required
                                 />
+
+                                <v-layout row>
+                                    <v-flex md6>
+                                        <v-text-field
+                                                label="起始时间(mm/dd/yyyy)"
+                                                ref="start"
+                                                id="start"
+                                                v-model="start"
+                                                prepend-icon="mdi-calendar"
+                                                type="date"
+                                                :rules="[() => !!start || '请填写完整信息!']"
+                                                :error-messages="errorMessages"
+                                                required
+                                        />
+                                    </v-flex>
+                                    <v-flex md6>
+                                        <v-text-field
+                                                label="结束时间(mm/dd/yyyy)"
+                                                ref="end"
+                                                id="end"
+                                                v-model="end"
+                                                prepend-icon="mdi-calendar"
+                                                type="date"
+                                                :rules="[() => !!end || '请填写完整信息!']"
+                                                :error-messages="errorMessages"
+                                                required
+                                        />
+                                    </v-flex>
+                                </v-layout>
+                                <v-text-field
+                                        id="programDetails"
+                                        label="项目详情"
+                                        ref="programDetails"
+                                        v-model="programDetails"
+                                        prepend-icon="mdi-eye"
+                                        type="text"
+                                        :rules="[() => !!programDetails || '请填写完整信息!']"
+                                        :error-messages="项目详情出错"
+                                        required
+                                />
+
                             </v-form>
                         </v-card-text>
                         <v-card-actions>
@@ -90,22 +144,39 @@
         name: "publish",
         data() {
             return {
+                programName:'',
+                drugName:'',
+                diseaseType:0,
+                ApplicationDisease:'',
+                TotalVolunteers:0,
+                start:new Date(),
+                end:new Date(),
+                programDetails:'',
                 allDiseases :['无疾病','某些传染病和寄生虫病','肿瘤' ,'血液及造血器官疾病和某些涉及免疫机制的疾患' ,'内分泌营养和代谢疾病' ,'精神和行为障碍' ,'神经系统疾病','眼和附器疾病','耳和乳突疾病' ,'循环系统疾病' ,'呼吸系统疾病','消化系统疾病' ,'皮肤和皮下组织疾病','肌肉骨骼和结缔组织疾病','泌尿生殖系统疾病','妊娠、分娩和产褥期' ,'起源于围生期的某些情况','先天畸形、变形和染色体异常' ,'不可归他类处' ],
             }
+        },
+        filters: {
+
         },
         methods :
             {
                 PublishProgram: function () {
 
-                    this.axios.post('${api}/publish',
+                    this.axios.post('${api}/project/publish',
                         {
-                                    username: this.store.state.username,
-                                    programname : this.programName,
-                                    state:this.ClinicalState,
-                                    drugname:this.drugName,
-                                    diseasetype:this.diseaseType,
-                                    adaptationdisease:this.ApplicationDisease,
-
+                            username: this.store.state.username,
+                            tblprogram:{
+                                programname : this.programName,
+                                state:0,
+                                // state 默认0 招募中 1 招募已经结束
+                                drugname:this.drugName,
+                                totalnumberpeople:this.TotalVolunteers,
+                                diseasetypeId: this.DiseaseToIndex(this.diseaseType),
+                                adaptationdisease:this.ApplicationDisease,
+                                starttime:this.start,
+                                endtime:this.end,
+                                programdetail:this.programDetails
+                            }
                         }).then((response) => {
                             console.log(response);
                         //  @return 0发布失败 1发布成功
@@ -117,6 +188,74 @@
                             default : alert('哎呀！出错了 QAQ');
                         }
                     });
+                },
+
+                DiseaseToIndex (value){
+                    const bindings = new Map([
+                        // tblDiseaseType.json
+                        [
+                            '无疾病',[0]
+                        ],
+                        [
+                            '某些传染病和寄生虫病',[1]
+                        ],
+                        [
+                            '肿瘤',[2]
+                        ],
+                        [
+                            '血液及造血器官疾病和某些涉及免疫机制的疾患',[3]
+                        ],
+                        [
+                            '内分泌营养和代谢疾病',[4]
+                        ],
+                        [
+                            '精神和行为障碍',[5]
+                        ],
+                        [
+                            '神经系统疾病',[6]
+                        ],
+                        [
+                            '眼和附器疾病',[7]
+                        ],
+                        [
+                            '耳和乳突疾病',[8]
+                        ],
+                        [
+                            '循环系统疾病',[9]
+                        ],
+                        [
+                            '呼吸系统疾病',[10]
+                        ],
+                        [
+                            '消化系统疾病',[11]
+                        ],
+                        [
+                            '皮肤和皮下组织疾病',[12]
+                        ],
+                        [
+                            '肌肉骨骼和结缔组织疾病',[13]
+                        ],
+                        [
+                            '泌尿生殖系统疾病',[14]
+                        ],
+                        [
+                            '妊娠、分娩和产褥期',[15]
+                        ],
+                        [
+                            '起源于围生期的某些情况',[16]
+                        ],
+                        [
+                            '先天畸形、变形和染色体异常',[17]
+                        ],
+                        [
+                            '不可归他类处',[18]
+                        ]
+
+                    ]);
+
+                    let binding = bindings.get(value);
+                    return binding[0];
+
                 }
             }
 

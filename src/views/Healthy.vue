@@ -1,32 +1,61 @@
 <template>
-    <v-app id="inspire"  >
-        <v-content>
-            <v-container
-                    class="fill-height healthy-background"
-                    fluid
-            >
+    <v-data-table
+            :headers="headers"
+            :items="desserts"
+            sort-by="calories"
+            class="elevation-1"
+            loading loading-text="数据加载中……请耐心等待"
+    >
+        <template v-slot:top>
+            <v-toolbar flat color="white">
+                <v-toolbar-title>健康受试者项目一览</v-toolbar-title>
+                <v-dialog v-model="dialog" max-width="500px">
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">我要报名</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <!--             modal 中的内容                   -->
+                                <v-row>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.calories" label="项目名称"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.calories" label="药物"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.fat" label="适应症"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.carbs" label="招募人数"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.protein" label="起始日期"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.protein" label="截止日期"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-text>
 
-                <v-card class="healthy-data-table">
-                    <v-card-title>
-                        健康受试者项目一览
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                                v-model="search"
-                                label="Search"
-                                single-line
-                                hide-details
-                        ></v-text-field>
-                    </v-card-title>
-                    <v-data-table
-                            :headers="headers"
-                            :items="info"
-                            class="elevation-1"
-                    >
-                    </v-data-table>
-                </v-card>
-            </v-container>
-        </v-content>
-    </v-app>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="teal" outlined @click="close">取消</v-btn>
+                            <v-btn color="teal" outlined @click="save">确认</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-toolbar>
+        </template>
+        <template v-slot:item.action="{ item }">
+            <v-btn color="teal"    @click="editItem(item)" outlined>我要报名</v-btn>
+        </template>
+        <template v-slot:no-data>
+            <v-btn color="primary" @click="initialize">Reset</v-btn>
+        </template>
+    </v-data-table>
 </template>
 
 <script>
@@ -44,12 +73,26 @@
                     { text: '招募人数', value: '' },
                     { text: '起始日期', value: '' },
                     { text: '截止日期', value: '' },
+                    { text: '我要报名', value: 'action', sortable: false },
                 ],
             }
         },
 
+        computed: {
+            formTitle () {
+                return '';
+            },
+        },
 
+        watch: {
+            dialog (val) {
+                val || this.close()
+            },
+        },
 
+        created () {
+            this.initialize()
+        },
         filters: {
             IndexToDisease (value){
 
@@ -122,24 +165,20 @@
         },
 
         methods: {
-            ProgramForHealthy :function() {
-
-
-
-
+            initialize () {
                 this.axios.post('${api}/publish',
                     {
-                                userName: this.store.state.username,
-                                userPwd: this.store.state.password,
-                                ProgramName : this.programName,
-                                State:this.ClinicalState,
-                                DrugName:this.drugName,
-                                DiseaseType:this.diseaseType,
-                                AdaptationDisease:this.ApplicationDisease,
+                        userName: this.store.state.username,
+                        userPwd: this.store.state.password,
+                        ProgramName : this.programName,
+                        State:this.ClinicalState,
+                        DrugName:this.drugName,
+                        DiseaseType:this.diseaseType,
+                        AdaptationDisease:this.ApplicationDisease,
 
                     }).then((response) => {
                     console.log(response);
-
+                    this.info=response.data;
                     //  @return 0发布失败 1发布成功
                     switch (parseInt(response.data)) {
                         case 0 : alert('发布失败 TAT');
@@ -149,9 +188,8 @@
                         default : alert('哎呀！不知道哪里出错了 QAQ');
                     }
                 });
+            },
 
-
-            }
         }
     }
 </script>
@@ -159,7 +197,7 @@
 
 <style scoped>
 
-    .healthy-data-table{
+    .v-data-table{
         width: 80%;
         margin: auto;
     }

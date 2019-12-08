@@ -6,9 +6,8 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    currentUser:null,
-    currentIdentity:null,
-    currentType:null
+    currentUser:'',//用户名
+    currentType:0
 
   },
   mutations: {
