@@ -194,9 +194,6 @@
                     const bindings = new Map([
                         // tblDiseaseType.json
                         [
-                            '无疾病',[0]
-                        ],
-                        [
                             '某些传染病和寄生虫病',[1]
                         ],
                         [
