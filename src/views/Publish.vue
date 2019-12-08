@@ -164,7 +164,7 @@
 
                     this.axios.post('${api}/project/publish',
                         {
-                            username: this.store.state.username,
+                            username: this.$store.state.username,
                             tblprogram:{
                                 programname : this.programName,
                                 state:0,

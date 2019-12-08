@@ -65,8 +65,8 @@
 
                 this.axios.post('http://47.100.227.73:8080/recruit/api/login',
                         {
-                            userName: this.username,
-                            userPwd: this.password,
+                            username: this.username,
+                            userpwd: this.password,
                         }).then((response) => {
 
                     console.log(response);
@@ -82,8 +82,8 @@
 
                     if(parseInt(response.data.res)===2)
                     {
-                        this.store.state.currentUser = this.username;
-                        this.store.state.currentType=response.data.type;
+                        this.$store.state.currentUser = this.username;
+                        this.$store.state.currentType=response.data.type;
                         switch (parseInt(response.data.type)) {
                             case 0 : this.$router.push({name:'patient'});
                                 break;
