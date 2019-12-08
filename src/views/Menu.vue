@@ -7,7 +7,7 @@
             class="elevation-1"
             loading loading-text="数据加载中……请耐心等待"
     >
-        <template v-slot:top>
+        <template #top>
             <v-toolbar flat color="white">
                 <v-toolbar-title>健康受试者项目一览</v-toolbar-title>
                 <v-dialog v-model="dialog" max-width="500px">

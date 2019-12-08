@@ -6,7 +6,7 @@
             class="elevation-1"
             loading loading-text="数据加载中……请耐心等待"
     >
-        <template v-slot:top>
+        <template #top>
             <v-toolbar flat color="white">
                 <v-toolbar-title>健康受试者项目一览</v-toolbar-title>
                 <v-dialog v-model="dialog" max-width="500px">
@@ -49,10 +49,10 @@
                 </v-dialog>
             </v-toolbar>
         </template>
-        <template v-slot:item.action="{ item }">
+        <template #item.action="{ item }">
             <v-btn color="teal"    @click="editItem(item)" outlined>我要报名</v-btn>
         </template>
-        <template v-slot:no-data>
+        <template #no-data>
             <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
     </v-data-table>
@@ -66,6 +66,8 @@
             return {
                 search: '',
                 info:[],
+                dialog: false,
+                desserts:[],
                 headers: [
                     { text: '项目名称', value: '' },
                     { text: '药物', value: '' },
