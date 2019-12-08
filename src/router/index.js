@@ -33,6 +33,11 @@ const routes = [
     component: () => import('../views/ShowVolunteerProfileTable.vue')
   },
   {
+    path: '/authority-table',
+    name: 'authority-table',
+    component: () => import('../views/ShowAuthorityProfileTable.vue')
+  },
+  {
     path: '/menu',
     name: 'menu',
     component: () => import('../views/Menu.vue'),

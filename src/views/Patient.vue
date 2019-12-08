@@ -117,7 +117,6 @@
             }
         },mounted() {
             this.ProgramForPatient();
-            this.arr = Object.values(this.info);
 
         },
         methods: {

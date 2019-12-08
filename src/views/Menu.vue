@@ -45,9 +45,7 @@
                 headers: [
                     {
                         text: 'Dessert (100g serving)',
-                        align: 'left',
-                        filterable: false,
-                        value: 'name',
+                        value: 'name'
                     },
                     { text: 'Calories', value: 'calories' },
                     { text: 'Fat (g)', value: 'fat' },
@@ -137,6 +135,11 @@
                         iron: '6%',
                     },
                 ],
+            }
+        },
+        filters :{
+            upUp : function (value) {
+                return value.toUpperCase();
             }
         },
         methods:{

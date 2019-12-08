@@ -1,44 +1,45 @@
-<!--志愿者个人中心主页 先加载志愿者申请的所有项目-->
+<!--机构个人中心主页 先加载机构曾经发布的所有项目-->
 <template>
-        <v-content>
-            <v-container
-                    class="fill-height patient-background"
-                    fluid
-            >
-                <v-card class="patient-data-table">
-                    <v-card-title>
-                        您的相关项目
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                                v-model="search"
-                                label="Search"
-                                single-line
-                                hide-details
-                        ></v-text-field>
-                    </v-card-title>
-                    <v-data-table
-                            :headers="headers"
-                            :items="programList"
-                            class="elevation-1"
-                            loading loading-text="数据加载中……请耐心等待"
-                    >
-                    </v-data-table>
-                </v-card>
-            </v-container>
-        </v-content>
+    <v-content>
+        <v-container
+                class="fill-height patient-background"
+                fluid
+        >
+            <v-card class="patient-data-table">
+                <v-card-title>
+                    您已经发布的项目
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                            v-model="search"
+                            label="Search"
+                            single-line
+                            hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                        :headers="headers"
+                        :items="allPrograms"
+                        class="elevation-1"
+                        loading loading-text="数据加载中……请耐心等待"
+                >
+                </v-data-table>
+            </v-card>
+        </v-container>
+    </v-content>
 </template>
 
 <script>
     export default {
-        name: "volunteer-table",
+        name: "authority-table",
+
         data() {
             return {
                 search:'',
-                programList:[],
+                allPrograms:[],
                 headers: [
                     {text: '项目名称', value: ''},
                     {text: '药物', value: ''},
-                    {text: '适应症', value: '{{programList.adaptationdisease|IndexToDisease}}'},
+                    {text: '适应症', value: ''},
                     {text: '招募人数', value: ''},
                     {text: '起始日期', value: ''},
                     {text: '截止日期', value: ''},
@@ -48,15 +49,6 @@
         },
         filters: {
             // 数字 转化为状态
-            IndexToState(value) {
-                const bindings = new Map([
-                    [0, ['未审批']],
-                    [1, ['审批通过']],
-                    [2, ['审批未通过']]
-                ]);
-                let binding = bindings.get(value);
-                return binding[0];
-            },
             IndexToDisease(value) {
 
                 const bindings = new Map([
@@ -126,19 +118,21 @@
 
             }
         }, mounted() {
-            this.showProgramProfile();
+            this.getAllMyPrograms();
 
         },
         methods: {
             // 只传 username
 
-            showProgramProfile : function ()  {
+            getAllMyPrograms : function ()  {
                 this.axios.post('${api}/?',
                     {
                         username: this.store.state.username,
 
+
                     }).then((response) => {
-                    this.programList = response.data;
+                    console.log(response);
+                    this.allPrograms = response.data;
                 });
             }
 
