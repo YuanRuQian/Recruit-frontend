@@ -61,7 +61,7 @@
         },
         methods: {
             UserLogIn : function () {
-                this.axios.interceptors.request.use(
+               /* this.axios.interceptors.request.use(
                     config => {
                         // 在发送请求之前开始进度条
                         this.$Progress.start(); // for every request start the progress
@@ -73,7 +73,7 @@
                         error='在发送请求之前开始进度条失败';
                         console.log(error);
                     }
-                );
+                );*/
 
 
                 this.axios.post('http://10.7.35.156:8000/api/login',

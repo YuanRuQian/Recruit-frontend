@@ -99,15 +99,13 @@
 
                     this.axios.post('${api}/publish',
                         {
-                            json :
-                                {
                                     username: this.store.state.username,
                                     programname : this.programName,
                                     state:this.ClinicalState,
                                     drugname:this.drugName,
                                     diseasetype:this.diseaseType,
                                     adaptationdisease:this.ApplicationDisease,
-                                }
+
                         }).then((response) => {
                             console.log(response);
                         //  @return 0发布失败 1发布成功

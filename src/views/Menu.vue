@@ -23,6 +23,7 @@
                             :search="search"
                             @click:row="showDeatilsEachRow"
                             v-on="on"
+                            loading loading-text="数据加载中……请耐心等待"
                     >
                     </v-data-table>
                 </template>

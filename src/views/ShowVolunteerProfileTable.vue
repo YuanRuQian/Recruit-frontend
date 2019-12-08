@@ -18,8 +18,9 @@
                     </v-card-title>
                     <v-data-table
                             :headers="headers"
-                            :items="info"
+                            :items="programList"
                             class="elevation-1"
+                            loading loading-text="数据加载中……请耐心等待"
                     >
                     </v-data-table>
                 </v-card>
@@ -31,92 +32,91 @@
 <script>
     export default {
         name: "volunteer-table",
-        data () {
+        data() {
             return {
-                search: '',
-                info:[],
+                programList:[],
                 headers: [
-                    { text: '项目名称', value: '' },
-                    { text: '药物', value: '' },
-                    { text: '适应症', value: '' },
-                    { text: '招募人数', value: '' },
-                    { text: '起始日期', value: '' },
-                    { text: '截止日期', value: '' },
-                    { text: '申请状态', value: '' },
+                    {text: '项目名称', value: ''},
+                    {text: '药物', value: ''},
+                    {text: '适应症', value: ''},
+                    {text: '招募人数', value: ''},
+                    {text: '起始日期', value: ''},
+                    {text: '截止日期', value: ''},
+                    {text: '申请状态', value: ''},
                 ],
             }
         },
         filters: {
             // 数字 转化为状态
-            IndexToState (value) {
+            IndexToState(value) {
                 const bindings = new Map([
-                    [0,['未审批']],
-                    [1,['审批未通过']],
-                    [2,['审批通过']]
+                    [0, ['未审批']],
+                    [1, ['审批通过']],
+                    [2, ['审批未通过']]
                 ]);
                 let binding = bindings.get(value);
                 return binding[0];
             },
-            IndexToDisease (value){
+            IndexToDisease(value) {
 
                 const bindings = new Map([
                     // tblDiseaseType.json
                     [
-                        0,['无疾病']
+                        0, ['无疾病']
                     ],
                     [
-                        1,['某些传染病和寄生虫病']
+                        1, ['某些传染病和寄生虫病']
                     ],
                     [
-                        2,['肿瘤']
+                        2, ['肿瘤']
                     ],
                     [
-                        3,['血液及造血器官疾病和某些涉及免疫机制的疾患']
+                        3, ['血液及造血器官疾病和某些涉及免疫机制的疾患']
                     ],
                     [
-                        4,['内分泌营养和代谢疾病']
+                        4, ['内分泌营养和代谢疾病']
                     ],
                     [
-                        5,['精神和行为障碍']
+                        5, ['精神和行为障碍']
                     ],
                     [
-                        6,['神经系统疾病']
+                        6, ['神经系统疾病']
                     ],
                     [
-                        7,['眼和附器疾病']
+                        7, ['眼和附器疾病']
                     ],
                     [
-                        8,['耳和乳突疾病']
+                        8, ['耳和乳突疾病']
                     ],
                     [
-                        9,['循环系统疾病']
+                        9, ['循环系统疾病']
                     ],
                     [
-                        10,['呼吸系统疾病']
+                        10, ['呼吸系统疾病']
                     ],
                     [
-                        11,['消化系统疾病']
+                        11, ['消化系统疾病']
                     ],
                     [
-                        12,['皮肤和皮下组织疾病']
+                        12, ['皮肤和皮下组织疾病']
                     ],
                     [
-                        13,['肌肉骨骼和结缔组织疾病']
+                        13, ['肌肉骨骼和结缔组织疾病']
                     ],
                     [
-                        14,['泌尿生殖系统疾病']
+                        14, ['泌尿生殖系统疾病']
                     ],
                     [
-                        15,['妊娠、分娩和产褥期']
+                        15, ['妊娠、分娩和产褥期']
                     ],
                     [
-                        16,['起源于围生期的某些情况']
+                        16, ['起源于围生期的某些情况']
                     ],
                     [
-                        17,['先天畸形、变形和染色体异常']
+                        17, ['先天畸形、变形和染色体异常']
                     ],
                     [
-                        18,['不可归他类处']
+                        18, ['不可归他类处']
                     ]
 
                 ]);
@@ -125,40 +125,25 @@
                 return binding[0];
 
             }
-        },mounted() {
-            this.ProgramForPatient();
-            this.arr = Object.values(this.info);
+        }, mounted() {
+            this.showProgramProfile();
 
         },
         methods: {
-            ProgramForPatient :function() {
+            // 只传 username
 
-                this.axios.post('${api}/publish',
+            showProgramProfile : function ()  {
+                this.axios.post('${api}/?',
                     {
-                        userName: this.store.state.username,
-                        userPwd: this.store.state.password,
-                        ProgramName : this.programName,
-                        State:this.ClinicalState,
-                        DrugName:this.drugName,
-                        DiseaseType:this.diseaseType,
-                        AdaptationDisease:this.ApplicationDisease
-                    }
-                ).then((response) => {
+                                username: this.store.state.username,
+
+
+                    }).then((response) => {
                     console.log(response);
-
-                    //  @return 0发布失败 1发布成功
-                    switch (parseInt(response)) {
-                        case 0 : alert('发布失败 TAT');
-                            break;
-                        case 1 : alert('发布成功！');
-                            break;
-                        default : alert('哎呀！不知道哪里出错了 QAQ');
-                    }
+                    this.programList = response.data;
                 });
-
-
-
             }
+
         }
     }
 </script>

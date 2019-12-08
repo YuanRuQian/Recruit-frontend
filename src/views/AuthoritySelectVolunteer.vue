@@ -7,6 +7,7 @@
             item-key="name"
             show-select
             class="elevation-1"
+            loading loading-text="数据加载中……请耐心等待"
     >
         <template v-slot:top>
             <v-switch v-model="singleSelect" label="Single select" class="pa-3"></v-switch>

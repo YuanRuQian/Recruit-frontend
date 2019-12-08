@@ -20,6 +20,7 @@
                             :headers="headers"
                             :items="info"
                             class="elevation-1"
+                            loading loading-text="数据加载中……请耐心等待"
                     >
                     </v-data-table>
                 </v-card>
