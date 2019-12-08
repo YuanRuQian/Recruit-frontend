@@ -12,16 +12,7 @@ const routes = [
     name: 'home',
     component: Home,
   },
-  {
-    path:'/details',
-    name: 'details',
-    component :()=> import('../views/ShowDiseaseDetails.vue'),
-  },
-  {
-    path:'/volunteer',
-    name: 'volunteer',
-    component :()=> import('../views/ShowVolunteerDetails.vue'),
-  },
+
   {
     path:'/select',
     name: 'select',
@@ -40,20 +31,7 @@ const routes = [
   {
     path: '/menu',
     name: 'menu',
-    component: () => import('../views/Menu.vue'),
-    children:
-        [
-          {
-            path:'/menu/details',
-            name: 'details',
-            component :()=> import('../views/ShowDiseaseDetails.vue'),
-          },
-          {
-            path:'/menu/volunteer',
-            name: 'volunteer',
-            component :()=> import('../views/ShowVolunteerDetails.vue'),
-          },
-        ]
+    component: () => import('../views/Menu.vue')
   },
   {
     path: '/sign-in',

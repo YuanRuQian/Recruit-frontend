@@ -173,7 +173,7 @@
                         userName: this.store.state.username,
                         userPwd: this.store.state.password,
                         ProgramName : this.programName,
-                        State:this.ClinicalState,
+                        State:0,
                         DrugName:this.drugName,
                         DiseaseType:this.diseaseType,
                         AdaptationDisease:this.ApplicationDisease,
@@ -206,8 +206,9 @@
 
 
     .healthy-background {
-        background: url('../assets/healthy-background.jpg');
-        background-size: cover;
+        background: #43C6AC;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #F8FFAE, #43C6AC);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #F8FFAE, #43C6AC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         width:100%;
         height: 100%;
         color:teal;
