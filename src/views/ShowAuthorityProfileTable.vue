@@ -28,7 +28,7 @@
                         >
 
                             <template v-slot:item.action="{ item }">
-                                <v-btn color="teal" @click="goToAuthoritySelectVolunteer" outlined>选择志愿者</v-btn>
+                                <v-btn color="teal" @click="goToAuthoritySelectVolunteer(item)" outlined>选择志愿者</v-btn>
                             </template>
 
                         </v-data-table>
@@ -75,7 +75,7 @@
 
         }, mounted() {
 
-            this.axios.get('http://47.100.227.73:8080/recruit/api/project/getprogrambypro',
+            this.axios.post('http://47.100.227.73:8080/recruit/api/project/getprogrambypro',
                 {
                     username:this.$store.state.currentUser
                 }).then((response) => {
@@ -161,16 +161,8 @@
 
 
             goToAuthoritySelectVolunteer : function (value) {
-                this.axios.post('${api}/?',
-                    {
-                        programid : value.programid,
-                        selectedvolunteers : this.selected
-
-                    }).then((response) => {
-                    console.log(response);
-                    this.allPrograms = response.data;
-                });
-                this.$router.push({name:'select',params: { programid:value.programid} });
+                // 跳转到相应项目的所有报名的志愿者的页面
+                this.$router.push({name:'select',params: { programid:value.id} });
             }
 
         }

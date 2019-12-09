@@ -63,7 +63,7 @@
             UserLogIn : function () {
 
 
-                this.axios.post('/api/login',
+                this.axios.post('http://47.100.227.73:8080/recruit/api/login',
                         {
                             username: this.username,
                             userpwd: this.password,
@@ -97,9 +97,9 @@
                     else
                         {
                             switch (parseInt(response.data.res)) {
-                                case 0 : this.prompt+='不存在该用户 δ(´д｀; )';
+                                case 0 : this.prompt ='不存在该用户 δ(´д｀; )';
                                     break;
-                                case 1 : this.prompt+='用户密码错误 (-_-)ゞ゛';
+                                case 1 : this.prompt ='用户密码错误 (-_-)ゞ゛';
                                     break;
                             }
                     }
