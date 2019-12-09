@@ -141,9 +141,22 @@
             else
             {
                 // 如果用户类型错误 跳转对应页面
-                if(this.$store.state.currentType===1) {this.$router.push({name:'healthy'})}
+                if(this.$store.state.currentType===0) {this.$router.push({name:'patient'})}
                 if(this.$store.state.currentType===2) {this.$router.push({name:'publish'})}
                 // 显示本人未报名的项目
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/getallbyvo').then((response) => {
+                    console.log(response.data);
+                    this.programList=response.data;
+                    this.programList.forEach(element =>
+                    {
+                        //报名的type为true 未报名的为null
+                        //如果报名了则不显示该项目
+                        if(element.type===true) this.programList.splice(this.programList.indexOf(element),1);
+                    });
+                    this.programList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
+
+                });
+
             }
 
         },

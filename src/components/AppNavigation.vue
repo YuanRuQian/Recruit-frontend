@@ -10,6 +10,7 @@
                         <v-list-item-content>
                             {{item.title}}
                         </v-list-item-content>
+                        <v-list-item-action v-on:click="item.action"></v-list-item-action>
                     </v-list-item>
                     <v-divider :key="`divider-${index}`"></v-divider>
                 </template>
@@ -21,6 +22,7 @@
             <router-link to="/">
                 <v-toolbar-title to="/">{{appTitle}}</v-toolbar-title>
             </router-link>
+            <v-btn color="white" class="hidden-sm-and-down" text icon @click="BackToHome"><v-icon>mdi-home</v-icon></v-btn>
             <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToMenu">开发文档</v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
             <div v-if="this.$store.state.currentUser===null">
@@ -50,7 +52,7 @@
                 appTitle: '受试者招募系统',
                 drawer: false,
                 items: [
-                    { title: '主页' ,icon:'mdi-home'},
+                    { title: '主页' ,icon:'mdi-home',action:'this.BackToHome'},
                     { title: '开发文档' ,icon:'mdi-file'},
                     { title: '登陆',icon:'mdi-account' },
                     { title: '注册',icon:'mdi-face' },
