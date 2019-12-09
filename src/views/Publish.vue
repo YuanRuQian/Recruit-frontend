@@ -152,7 +152,7 @@
                 start:new Date(),
                 end:new Date(),
                 programDetails:'',
-                allDiseases :['无疾病','某些传染病和寄生虫病','肿瘤' ,'血液及造血器官疾病和某些涉及免疫机制的疾患' ,'内分泌营养和代谢疾病' ,'精神和行为障碍' ,'神经系统疾病','眼和附器疾病','耳和乳突疾病' ,'循环系统疾病' ,'呼吸系统疾病','消化系统疾病' ,'皮肤和皮下组织疾病','肌肉骨骼和结缔组织疾病','泌尿生殖系统疾病','妊娠、分娩和产褥期' ,'起源于围生期的某些情况','先天畸形、变形和染色体异常' ,'不可归他类处' ],
+                allDiseases :['某些传染病和寄生虫病','肿瘤' ,'血液及造血器官疾病和某些涉及免疫机制的疾患' ,'内分泌营养和代谢疾病' ,'精神和行为障碍' ,'神经系统疾病','眼和附器疾病','耳和乳突疾病' ,'循环系统疾病' ,'呼吸系统疾病','消化系统疾病' ,'皮肤和皮下组织疾病','肌肉骨骼和结缔组织疾病','泌尿生殖系统疾病','妊娠、分娩和产褥期' ,'起源于围生期的某些情况','先天畸形、变形和染色体异常' ,'不可归他类处' ],
             }
         },
         mounted (){
@@ -167,9 +167,9 @@
             {
                 PublishProgram: function () {
 
-                    this.axios.post('${api}/project/publish',
+                    this.axios.post('http://47.100.227.73:8080/recruit/api/project/publish',
                         {
-                            username: this.$store.state.username,
+                            username: this.$store.state.currentUser,
                             tblprogram:{
                                 programname : this.programName,
                                 state:0,
@@ -184,14 +184,8 @@
                             }
                         }).then((response) => {
                             console.log(response);
-                        //  @return 0发布失败 1发布成功
-                        switch (parseInt(response)) {
-                            case 0 : alert('发布失败 TAT');
-                            break;
-                            case 1 : alert('发布成功！');
-                            break;
-                            default : alert('哎呀！出错了 QAQ');
-                        }
+                            if(response.data===true) alert('发布成功！');
+                            else alert('哎呀，有东西出错了 QAQ');
                     });
                 },
 
