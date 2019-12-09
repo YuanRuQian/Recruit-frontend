@@ -300,6 +300,7 @@
                     this.axios.post('http://47.100.227.73:8080/recruit/api/register/volunteer',
                         {
 
+                            username:this.username,
                             userpwd: this.password,
                             tblvolunteer : {
                                 volunteername: this.realname,

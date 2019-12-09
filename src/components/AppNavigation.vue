@@ -20,10 +20,16 @@
             <router-link to="/">
                 <v-toolbar-title to="/">{{appTitle}}</v-toolbar-title>
             </router-link>
-            <v-btn color="teal darken-3" class="hidden-sm-and-down" to="/menu">开发文档</v-btn>
+            <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToMenu">开发文档</v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
-            <v-btn color="teal darken-3" class="hidden-sm-and-down" to="/sign-in">登陆</v-btn>
-            <v-btn color="teal darken-3" class="hidden-sm-and-down" to="/join">注册</v-btn>
+            <div v-if="this.$store.state.currentUser===null">
+                <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToSignIn">登陆</v-btn>
+                <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToJoin">注册</v-btn>
+            </div>
+            <div v-else>
+                <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToPersonalProfile">个人中心</v-btn>
+                <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="SignMeOut">登出</v-btn>
+            </div>
         </v-toolbar>
          <v-footer absolute color="teal">
         <v-spacer></v-spacer>
@@ -43,6 +49,30 @@
                     { title: '注册' }
                 ]
             };
+        },
+        methods:{
+            ToMenu:function(){
+                this.$router.push({name:'menu'});
+            },
+            ToSignIn:function(){
+                this.$router.push({name:'sign-in'});
+            },
+            ToJoin:function(){
+                this.$router.push({name:'join'});
+            },
+            ToPersonalProfile: function () {
+                switch (this.$store.state.currentType)
+                {
+                    case 0:
+                    case 1: this.$router.push({name:'volunteer-table'});break;
+                    case 2: this.$router.push({name:'authority-table'});break;
+                }
+            },
+            SignMeOut : function () {
+                this.$store.state.currentUser=null;
+                this.$store.state.currentType=null;
+                this.$router.push({name:'home'});
+            }
         }
     };
 </script>

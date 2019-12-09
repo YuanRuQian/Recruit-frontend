@@ -80,10 +80,13 @@
 
                     // 若登陆成功，跳转到用户身份对应的页面
 
+
+
                     if(parseInt(response.data.res)===2)
                     {
                         this.$store.state.currentUser = this.username;
                         this.$store.state.currentType=response.data.type;
+
                         switch (parseInt(response.data.type)) {
                             case 0 : this.$router.push({name:'patient'});
                                 break;

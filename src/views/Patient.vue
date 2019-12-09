@@ -127,11 +127,6 @@
         },
 
         mounted () {
-            // 如果未登陆 跳转登陆页面
-            if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
-            // 如果用户类型错误 跳转对应页面
-            if(this.$store.state.currentType===1) {this.$router.push({name:'healthy'})}
-            if(this.$store.state.currentType===2) {this.$router.push({name:'publish'})}
 
 
             this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
@@ -233,9 +228,16 @@
                 } else {
                     this.programList.push(this.editedItem)
                 }
-                this.axios.post('',
+
+                // 如果未登陆 跳转登陆页面
+                if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
+                // 如果用户类型错误 跳转对应页面
+                if(this.$store.state.currentType===1) {this.$router.push({name:'healthy'})}
+                if(this.$store.state.currentType===2) {this.$router.push({name:'publish'})}
+
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/application',
                     {
-                        id: this.editedItem.id,
+                        programnumber_id: this.editedItem.id,
                         username:this.$store.state.currentUser,
 
                     }).then((response) => {

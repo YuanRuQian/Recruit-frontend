@@ -1,17 +1,18 @@
 <!--志愿者个人中心主页 先加载志愿者申请的所有项目-->
 <template>
+    <v-app id="inspire"  >
         <v-content>
             <v-container
-                    class="fill-height patient-background"
+                    class="fill-height volunteer-table-background"
                     fluid
             >
-                <v-card class="patient-data-table">
+                <v-card>
                     <v-card-title>
-                        您的相关项目
+                        您申请的所有项目
                         <v-spacer></v-spacer>
                         <v-text-field
                                 v-model="search"
-                                label="Search"
+                                label="输入相关信息查找项目"
                                 single-line
                                 hide-details
                         ></v-text-field>
@@ -19,13 +20,12 @@
                     <v-data-table
                             :headers="headers"
                             :items="programList"
-                            class="elevation-1"
-                            loading loading-text="数据加载中……请耐心等待"
-                    >
-                    </v-data-table>
+                            :search="search"
+                    ></v-data-table>
                 </v-card>
             </v-container>
         </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -36,19 +36,37 @@
                 search:'',
                 programList:[],
                 headers: [
-                    {text: '项目名称', value: ''},
-                    {text: '药物', value: ''},
-                    {text: '适应症', value: '{{programList.adaptationdisease|IndexToDisease}}'},
-                    {text: '招募人数', value: ''},
-                    {text: '起始日期', value: ''},
-                    {text: '截止日期', value: ''},
-                    {text: '申请状态', value: ''},
+                    { text: '项目ID', value: 'id' },
+                    { text: '项目名称', value: 'programname' },
+                    { text: '药物', value: 'drugname' },
+                    { text: '疾病类型', value: 'diseasetypeId' },
+                    { text: '适应症', value: 'adaptationdisease' },
+                    { text: '招募人数', value: 'totalnumberpeople' },
+                    { text: '起始日期', value: 'starttime' },
+                    { text: '截止日期', value: 'endtime' },
+                    { text: '项目详情', value: 'programdetail' },
+                    { text: '审核情况', value: 'status' },
                 ],
             }
         },
-        filters: {
-            // 数字 转化为状态
-            IndexToState(value) {
+        mounted() {
+
+            console.log(this.$store.state.currentUser);
+            this.axios.post('http://47.100.227.73:8080/recruit/api/project/status',
+                {
+                    username:this.$store.state.currentUser
+                }).then((response) => {
+                console.log(response.data);
+                this.programList=response.data;
+                this.programList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
+                this.programList.forEach(element =>element.status=this.IndexToStatus(element.status));
+            });
+
+
+        },
+        methods: {
+            // 只传 username
+            IndexToStatus(value) {
                 const bindings = new Map([
                     [0, ['未审批']],
                     [1, ['审批通过']],
@@ -124,23 +142,8 @@
                 let binding = bindings.get(value);
                 return binding[0];
 
-            }
-        }, mounted() {
-            this.showProgramProfile();
+            },
 
-        },
-        methods: {
-            // 只传 username
-
-            showProgramProfile : function ()  {
-                this.axios.post('${api}/?',
-                    {
-                        username: this.store.state.username,
-
-                    }).then((response) => {
-                    this.programList = response.data;
-                });
-            }
 
         }
     }
@@ -148,4 +151,21 @@
 
 <style scoped>
 
+    .volunteer-table-background {
+        background: #43C6AC;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #F8FFAE, #43C6AC);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #F8FFAE, #43C6AC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        width:100%;
+        height: 100%;
+        color:teal;
+    }
+    .v-card {
+        width: 99%;
+        margin:auto;
+    }
+    a {
+        color: white ;
+        text-decoration: none;
+        font-weight: bold;
+    }
 </style>

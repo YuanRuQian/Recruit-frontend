@@ -83,6 +83,7 @@
             if(this.$store.state.currentType===1) {this.$router.push({name:'volunteer-table'})}
             if(this.$store.state.currentType===2) {this.$router.push({name:'volunteer-table'})}
 
+            console.log(this.$store.state.currentUser)
 
             this.axios.post('http://47.100.227.73:8080/recruit/api/project/getprogrambypro',
                 {
