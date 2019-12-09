@@ -2,22 +2,72 @@
     <span>
         <v-navigation-drawer app v-model="drawer" class="teal lighten-2" dark disable-resize-watcher>
             <v-list>
-                <template v-for="(item, index) in items">
-                    <v-list-item :key="index">
-                        <v-list-item-icon>
-                             <v-icon v-text="item.icon"></v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            {{item.title}}
-                        </v-list-item-content>
-                        <v-list-item-action v-on:click="item.action"></v-list-item-action>
-                    </v-list-item>
-                    <v-divider :key="`divider-${index}`"></v-divider>
-                </template>
+               <v-list-item-group v-model="item" color="teal">
+
+
+        <v-list-item v-on:click="BackToHome">
+          <v-list-item-icon>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>主页</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+         <v-list-item v-on:click="ToMenu">
+          <v-list-item-icon>
+            <v-icon>mdi-file</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>开发文档</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+     <div v-if="this.$store.state.currentUser===null">
+        <v-list-item v-on:click="ToSignIn">
+          <v-list-item-icon>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>登陆</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+         <v-list-item v-on:click="ToJoin">
+          <v-list-item-icon>
+            <v-icon>mdi-face</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>注册</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+     </div>
+
+        <div v-else>
+         <v-list-item v-on:click="ToPersonalProfile">
+          <v-list-item-icon>
+            <v-icon>mdi-airplay</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>个人中心</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+         <v-list-item v-on:click="SignMeOut">
+          <v-list-item-icon>
+            <v-icon>mdi-update</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>登出</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        </div>
+
+      </v-list-item-group>
             </v-list>
         </v-navigation-drawer>
         <v-toolbar app color="teal" dark>
-            <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon  @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer class="hidden-md-and-up"></v-spacer>
             <router-link to="/">
                 <v-toolbar-title to="/">{{appTitle}}</v-toolbar-title>
@@ -51,14 +101,6 @@
             return {
                 appTitle: '受试者招募系统',
                 drawer: false,
-                items: [
-                    { title: '主页' ,icon:'mdi-home',action:'this.BackToHome'},
-                    { title: '开发文档' ,icon:'mdi-file'},
-                    { title: '登陆',icon:'mdi-account' },
-                    { title: '注册',icon:'mdi-face' },
-                    { title: '个人中心',icon:'mdi-airplay' },
-                    { title: '登出',icon:'mdi-update' }
-                ]
             };
         },
         methods:{
