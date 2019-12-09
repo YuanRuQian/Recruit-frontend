@@ -64,7 +64,7 @@
                         username: this.username,
                         userpwd: this.password,
                     }).then((response) => {
-                    console.log(response);
+                    console.log(response.data);
                     // 'res':(登陆成功与否 0不存在该用户 1存在该用户密码错误 2登陆成功),
                     // 'type':(登录人员类型（如果登陆失败,type为空,否则type有值 其中 0病人 1健康人 2机构）)
                     // prompt 用于记录登陆成功与否/登陆人员类型 将显示在弹窗里

@@ -66,8 +66,9 @@
       </v-list-item-group>
             </v-list>
         </v-navigation-drawer>
+
         <v-toolbar app color="teal" dark>
-            <v-app-bar-nav-icon  @click="drawer = !drawer"></v-app-bar-nav-icon>
+           <v-app-bar-nav-icon  @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer class="hidden-md-and-up"></v-spacer>
             <router-link to="/">
                 <v-toolbar-title to="/">{{appTitle}}</v-toolbar-title>
@@ -106,15 +107,19 @@
         methods:{
             BackToHome :function(){
                 this.$router.push({name:'home'});
+                this.drawer=false;
             },
             ToMenu:function(){
                 this.$router.push({name:'menu'});
+                this.drawer=false;
             },
             ToSignIn:function(){
                 this.$router.push({name:'sign-in'});
+                this.drawer=false;
             },
             ToJoin:function(){
                 this.$router.push({name:'join'});
+                this.drawer=false;
             },
             ToPersonalProfile: function () {
                 switch (this.$store.state.currentType)
@@ -123,11 +128,13 @@
                     case 1: this.$router.push({name:'volunteer-table'});break;
                     case 2: this.$router.push({name:'authority-table'});break;
                 }
+                this.drawer=false;
             },
             SignMeOut : function () {
                 this.$store.state.currentUser=null;
                 this.$store.state.currentType=null;
                 this.$router.push({name:'home'});
+                this.drawer=false;
             }
         }
     };
