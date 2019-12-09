@@ -3,7 +3,7 @@
     <v-container class="join-background" fluid style="max-height: 100%;">
     <v-card class="general-frame">
         <v-toolbar flat color="teal" dark>
-            <v-toolbar-title>注册{{this.$route.params.id}}</v-toolbar-title>
+            <v-toolbar-title>注册</v-toolbar-title>
         </v-toolbar>
         <v-tabs vertical>
             <v-tab>
@@ -314,7 +314,7 @@
                     ).then((response) => {
                         console.log(response.data);
                         this.$store.state.currentUser=this.username;
-                        switch ( this.DiseaseToIndex(this.disease))
+                        switch (this.DiseaseToIndex(this.disease))
                         {
                             case 0:
                                 this.$store.state.currentUser=this.username;
