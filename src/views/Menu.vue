@@ -2,12 +2,12 @@
     <v-container fluid>
     <v-data-table
             :headers="headers"
-            :items="desserts"
+            :items="programList"
             sort-by="calories"
             class="elevation-1"
-            loading loading-text="数据加载中……请耐心等待"
+            loading-text="数据加载中……请耐心等待"
     >
-        <template #top>
+        <template v-slot:top>
             <v-toolbar flat color="white">
                 <v-toolbar-title>健康受试者项目一览</v-toolbar-title>
                 <v-dialog v-model="dialog" max-width="500px">
@@ -20,22 +20,31 @@
                                 <!--             modal 中的内容                   -->
                                 <v-row>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.calories" label="项目名称"></v-text-field>
+                                        <v-text-field readonly   v-model="editedItem.id" label="项目ID"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.calories" label="药物"></v-text-field>
+                                        <v-text-field readonly   v-model="editedItem.programname" label="项目名称"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.fat" label="适应症"></v-text-field>
+                                        <v-text-field readonly   v-model="editedItem.drugname" label="药物"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.carbs" label="招募人数"></v-text-field>
+                                        <v-text-field readonly   v-model="editedItem.diseasetypeId" label="疾病类型"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.protein" label="起始日期"></v-text-field>
+                                        <v-text-field readonly   v-model="editedItem.adaptationdisease" label="适应症"></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.protein" label="截止日期"></v-text-field>
+                                        <v-text-field readonly   v-model="editedItem.totalnumberpeople" label="招募人数"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field readonly   v-model="editedItem.starttime" label="起始日期"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field readonly  v-model="editedItem.endtime" label="截止日期"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                        <v-text-field readonly  v-model="editedItem.programdetail" label="项目详情"></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -51,11 +60,9 @@
             </v-toolbar>
         </template>
         <template v-slot:item.action="{ item }">
-            <v-btn color="teal"    @click="editItem(item)" outlined>{{item}}</v-btn>
+            <v-btn color="teal"    @click="editItem(item)" outlined>报名</v-btn>
         </template>
-        <template v-slot:no-data>
-            <v-btn color="primary" @click="initialize">Reset</v-btn>
-        </template>
+
     </v-data-table>
     </v-container>
 </template>
@@ -69,41 +76,30 @@
         data: () => ({
             dialog: false,
             headers: [
-                {
-                    text: 'Dessert (100g serving)',
-                    align: 'left',
-                    sortable: false,
-                    value: 'name',
-                },
-                { text: 'Calories', value: 'calories' },
-                { text: 'Fat (g)', value: 'fat' },
-                { text: 'Carbs (g)', value: 'carbs' },
-                { text: 'Protein (g)', value: 'protein' },
-                { text: 'Actions', value: 'action', sortable: false },
+                { text: '项目ID', value: 'id' },
+                { text: '项目名称', value: 'programname' },
+                { text: '药物', value: 'drugname' },
+                { text: '疾病类型', value: 'diseasetypeId' },
+                { text: '适应症', value: 'adaptationdisease' },
+                { text: '招募人数', value: 'totalnumberpeople' },
+                { text: '起始日期', value: 'starttime' },
+                { text: '截止日期', value: 'endtime' },
+                { text: '项目详情', value: 'programdetail' },
+                { text: '我要报名', value: 'action', sortable: false },
             ],
-            desserts: [],
+            programList: [
+            ],
+            programArr: [
+            ],
             editedIndex: -1,
             editedItem: {
-                name: '',
-                calories: 0,
-                fat: 0,
-                carbs: 0,
-                protein: 0,
+                id: 0,
             },
             defaultItem: {
-                name: '',
-                calories: 0,
-                fat: 0,
-                carbs: 0,
-                protein: 0,
+               id:0,
             },
         }),
 
-        computed: {
-            formTitle () {
-                return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-            },
-        },
 
         watch: {
             dialog (val) {
@@ -111,101 +107,96 @@
             },
         },
 
-        created () {
-            this.initialize()
+        mounted () {
+
+                this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
+                    console.log(response.data);
+                    this.programList=response.data;
+                    this.programList.forEach(element=> console.log(element.diseasetypeId=this.IndexToDisease(element.diseasetypeId)))
+
+
+                });
+
         },
 
         methods: {
-            initialize () {
-                this.desserts = [
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                        carbs: 24,
-                        protein: 4.0,
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                    },
-                    {
-                        name: 'Jelly bean',
-                        calories: 375,
-                        fat: 0.0,
-                        carbs: 94,
-                        protein: 0.0,
-                    },
-                    {
-                        name: 'Lollipop',
-                        calories: 392,
-                        fat: 0.2,
-                        carbs: 98,
-                        protein: 0,
-                    },
-                    {
-                        name: 'Honeycomb',
-                        calories: 408,
-                        fat: 3.2,
-                        carbs: 87,
-                        protein: 6.5,
-                    },
-                    {
-                        name: 'Donut',
-                        calories: 452,
-                        fat: 25.0,
-                        carbs: 51,
-                        protein: 4.9,
-                    },
-                    {
-                        name: 'KitKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                    },
-                ]
-            },
-            filters:{
+            IndexToDisease (value){
+
+                const bindings = new Map([
+                    // tblDiseaseType.json
+                    [
+                        0,['无疾病']
+                    ],
+                    [
+                        1,['某些传染病和寄生虫病']
+                    ],
+                    [
+                        2,['肿瘤']
+                    ],
+                    [
+                        3,['血液及造血器官疾病和某些涉及免疫机制的疾患']
+                    ],
+                    [
+                        4,['内分泌营养和代谢疾病']
+                    ],
+                    [
+                        5,['精神和行为障碍']
+                    ],
+                    [
+                        6,['神经系统疾病']
+                    ],
+                    [
+                        7,['眼和附器疾病']
+                    ],
+                    [
+                        8,['耳和乳突疾病']
+                    ],
+                    [
+                        9,['循环系统疾病']
+                    ],
+                    [
+                        10,['呼吸系统疾病']
+                    ],
+                    [
+                        11,['消化系统疾病']
+                    ],
+                    [
+                        12,['皮肤和皮下组织疾病']
+                    ],
+                    [
+                        13,['肌肉骨骼和结缔组织疾病']
+                    ],
+                    [
+                        14,['泌尿生殖系统疾病']
+                    ],
+                    [
+                        15,['妊娠、分娩和产褥期']
+                    ],
+                    [
+                        16,['起源于围生期的某些情况']
+                    ],
+                    [
+                        17,['先天畸形、变形和染色体异常']
+                    ],
+                    [
+                        18,['不可归他类处']
+                    ]
+
+                ]);
+
+                let binding = bindings.get(value);
+                return binding[0];
 
             },
             editItem (item) {
-                this.editedIndex = this.desserts.indexOf(item);
+                this.editedIndex = this.programList.indexOf(item);
                 this.editedItem = Object.assign({}, item);
                 this.dialog = true
             },
 
-            deleteItem (item) {
-                const index = this.desserts.indexOf(item);
-                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-            },
 
             close () {
-                this.dialog = false
+                this.dialog = false;
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem)
                     this.editedIndex = -1
@@ -214,10 +205,19 @@
 
             save () {
                 if (this.editedIndex > -1) {
-                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                    Object.assign(this.programList[this.editedIndex], this.editedItem)
                 } else {
-                    this.desserts.push(this.editedItem)
+                    this.programList.push(this.editedItem)
                 }
+                this.axios.post('',
+                    {
+                        id: this.editedItem.id,
+                        username:this.$store.state.currentUser,
+
+                    }).then((response) => {
+                    console.log(response.data);
+                    alert('恭喜您报名成功!');
+                });
                 this.close()
             },
         },

@@ -63,7 +63,7 @@
             UserLogIn : function () {
 
 
-                this.axios.post('http://47.100.227.73:8080/recruit/api/login',
+                this.axios.post('/api/login',
                         {
                             username: this.username,
                             userpwd: this.password,

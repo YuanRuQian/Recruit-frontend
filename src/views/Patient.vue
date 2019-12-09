@@ -37,7 +37,7 @@
                 search: '',
                 info:[],
                 headers: [
-                    { text: '项目名称', value: '' },
+                    { text: '项目名称', value: 'info.' },
                     { text: '药物', value: '' },
                     { text: '适应症', value: '' },
                     { text: '招募人数', value: '' },
@@ -121,20 +121,12 @@
         },
         methods: {
             ProgramForPatient :function() {
-
-                this.axios.post('${api}/publish',
+                this.axios.post('http://47.100.227.73:8080/recruit/api/login',
                             {
-                                userName: this.store.state.username,
-                                userPwd: this.store.state.password,
-                                ProgramName : this.programName,
-                                State:this.ClinicalState,
-                                DrugName:this.drugName,
-                                DiseaseType:this.diseaseType,
-                                AdaptationDisease:this.ApplicationDisease
+                                username: this.$store.state.currentUser,
                             }
                     ).then((response) => {
                     console.log(response);
-
                     //  @return 0发布失败 1发布成功
                     switch (parseInt(response)) {
                         case 0 : alert('发布失败 TAT');
