@@ -127,14 +127,23 @@
         },
 
         mounted () {
+            // 如果未登陆 显示全部项目 否则 仅显示未报名的项目
+            if(this.$store.state.currentUser===null)
+            {
+                this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
+                    console.log(response.data);
+                    this.programList=response.data;
+                    this.programList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
 
-
-            this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
-                console.log(response.data);
-                this.programList=response.data;
-                this.programList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
-
-            });
+                });
+            }
+            else
+            {
+                // 如果用户类型错误 跳转对应页面
+                if(this.$store.state.currentType===1) {this.$router.push({name:'healthy'})}
+                if(this.$store.state.currentType===2) {this.$router.push({name:'publish'})}
+                // 显示本人未报名的项目
+            }
 
         },
 
@@ -231,9 +240,7 @@
 
                 // 如果未登陆 跳转登陆页面
                 if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
-                // 如果用户类型错误 跳转对应页面
-                if(this.$store.state.currentType===1) {this.$router.push({name:'healthy'})}
-                if(this.$store.state.currentType===2) {this.$router.push({name:'publish'})}
+
 
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/application',
                     {
@@ -241,8 +248,9 @@
                         username:this.$store.state.currentUser,
 
                     }).then((response) => {
-                    console.log(response.data);
-                    alert('恭喜您报名成功!');
+
+                    if(response.data===true) {alert('恭喜您报名成功!')}
+                    else {alert('哪里出错了 QAQ')}
                 });
                 this.close()
             },

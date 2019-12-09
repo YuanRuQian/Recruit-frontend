@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid fill-height class="home-background" style="max-height: 100vh;">
+    <v-container fluid fill-height class="home-background">
         <v-layout justify-center align-center column pa-5>
             <h3>为临床试验招募患者受试者、健康志愿者和发布临床项目</h3>
 

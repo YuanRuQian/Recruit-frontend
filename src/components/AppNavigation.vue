@@ -1,11 +1,12 @@
-
-
 <template>
     <span>
         <v-navigation-drawer app v-model="drawer" class="teal lighten-2" dark disable-resize-watcher>
             <v-list>
                 <template v-for="(item, index) in items">
                     <v-list-item :key="index">
+                        <v-list-item-icon>
+                             <v-icon v-text="item.icon"></v-icon>
+                        </v-list-item-icon>
                         <v-list-item-content>
                             {{item.title}}
                         </v-list-item-content>
@@ -36,7 +37,12 @@
         <div class="white--text">&copy; 信息系统第二小组  {{ new Date().getFullYear() }}</div>
     </v-footer>
     </span>
-</template><script>
+</template>
+
+
+
+
+<script>
     export default {
         name: 'AppNavigation',
         data() {
@@ -44,13 +50,19 @@
                 appTitle: '受试者招募系统',
                 drawer: false,
                 items: [
-                    { title: '开发文档' },
-                    { title: '登陆' },
-                    { title: '注册' }
+                    { title: '主页' ,icon:'mdi-home'},
+                    { title: '开发文档' ,icon:'mdi-file'},
+                    { title: '登陆',icon:'mdi-account' },
+                    { title: '注册',icon:'mdi-face' },
+                    { title: '个人中心',icon:'mdi-airplay' },
+                    { title: '登出',icon:'mdi-update' }
                 ]
             };
         },
         methods:{
+            BackToHome :function(){
+                this.$router.push({name:'home'});
+            },
             ToMenu:function(){
                 this.$router.push({name:'menu'});
             },
