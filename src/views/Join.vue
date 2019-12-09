@@ -297,9 +297,7 @@
 
                 UserRegister: function () {
 
-
-
-                    this.axios.post('${api}/register/volunteer',
+                    this.axios.post('http://47.100.227.73:8080/recruit/api/register/volunteer',
                         {
 
                             userpwd: this.password,
@@ -314,17 +312,28 @@
                             }
                         }
                     ).then((response) => {
-                        this.info = response;
-                        switch ( this.$options.filters.DiseaseToIndex(this.disease))
+                        console.log(response.data);
+                        this.$store.state.currentUser=this.username;
+                        switch ( this.DiseaseToIndex(this.disease))
                         {
-                            case 0: this.$router.push('healthy');break;
-                            default : this.$router.push('patient');break;
+                            case 0:
+                                this.$store.state.currentUser=this.username;
+                                this.$store.state.currentType=1;
+                                this.$router.push({name:'healthy'});
+                                break;
+                                // 没病 健康人
+                            default :
+                                this.$store.state.currentUser=this.username;
+                                this.$store.state.currentType=0;
+                                this.$router.push({name:'patient'});
+                                break;
+                                // 患者
                         }
                     });
                 },
 
                 AuthorityRegister: function () {
-                    this.axios.get('?',
+                    this.axios.get('http://47.100.227.73:8080/recruit/api/register/promulgator',
                         {
                             userName: this.username2,
                             userPwd: this.password2,
@@ -332,7 +341,9 @@
                             Tel: this.tel2,
                         }
                     ).then((response) => {
-                        this.currentType = response;
+                        console.log(response.data);
+                        this.$store.state.currentUser=this.username;
+                        this.$store.state.currentType=2;
                         this.$router.push({name:'publish'});
                     });
                 },
