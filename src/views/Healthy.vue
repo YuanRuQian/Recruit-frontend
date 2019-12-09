@@ -144,7 +144,7 @@
                 if(this.$store.state.currentType===0) {this.$router.push({name:'patient'})}
                 if(this.$store.state.currentType===2) {this.$router.push({name:'publish'})}
                 // 显示本人未报名的项目
-                this.axios.post('http://47.100.227.73:8080/recruit/api/project/getallbyvo').then((response) => {
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/getallbyvo',{username:this.$store.state.currentUser}).then((response) => {
                     console.log(response.data);
                     this.programList=response.data;
                     this.programList.forEach(element =>
