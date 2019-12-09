@@ -74,7 +74,16 @@
         filters: {
 
         }, mounted() {
-            this.getAllMyPrograms();
+
+            this.axios.get('http://47.100.227.73:8080/recruit/api/project/getprogrambypro',
+                {
+                    username:this.$store.state.currentUser
+                }).then((response) => {
+                console.log(response.data);
+                this.programList=response.data;
+                this.programList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
+
+            });
 
         },
         methods: {
@@ -149,17 +158,6 @@
             },
             // 只传 username
 
-            getAllMyPrograms : function ()  {
-                this.axios.post('${api}/?',
-                    {
-                        username: this.store.state.username,
-
-
-                    }).then((response) => {
-                    console.log(response);
-                    this.allPrograms = response.data;
-                });
-            },
 
 
             goToAuthoritySelectVolunteer : function (value) {
