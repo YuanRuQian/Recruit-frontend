@@ -155,7 +155,12 @@
                 allDiseases :['无疾病','某些传染病和寄生虫病','肿瘤' ,'血液及造血器官疾病和某些涉及免疫机制的疾患' ,'内分泌营养和代谢疾病' ,'精神和行为障碍' ,'神经系统疾病','眼和附器疾病','耳和乳突疾病' ,'循环系统疾病' ,'呼吸系统疾病','消化系统疾病' ,'皮肤和皮下组织疾病','肌肉骨骼和结缔组织疾病','泌尿生殖系统疾病','妊娠、分娩和产褥期' ,'起源于围生期的某些情况','先天畸形、变形和染色体异常' ,'不可归他类处' ],
             }
         },
-        filters: {
+        mounted (){
+            // 如果未登陆 跳转登陆页面
+            if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
+            // 如果用户类型错误 跳转对应页面
+            if(this.$store.state.currentType===0) {this.$router.push({name:'patient'})}
+            if(this.$store.state.currentType===1) {this.$router.push({name:'healthy'})}
 
         },
         methods :
