@@ -1,54 +1,83 @@
 <!--机构个人中心主页 先加载机构曾经发布的所有项目-->
 <template>
-    <v-content>
-        <v-container
-                class="fill-height patient-background"
-                fluid
-        >
-            <v-card class="patient-data-table">
-                <v-card-title>
-                    您已经发布的项目
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                            v-model="search"
-                            label="Search"
-                            single-line
-                            hide-details
-                    ></v-text-field>
-                </v-card-title>
-                <v-data-table
-                        :headers="headers"
-                        :items="allPrograms"
-                        class="elevation-1"
-                        @click:row="goToAuthoritySelectVolunteer"
-                        loading loading-text="数据加载中……请耐心等待"
-                >
-                </v-data-table>
-            </v-card>
-        </v-container>
-    </v-content>
+    <v-app id="inspire"  >
+        <v-content>
+            <v-container
+                    class="fill-height auth-table-background"
+                    fluid
+            >
+                <v-container fluid>
+                    <v-card>
+                        <v-card-title>
+                            本机构曾经发布的所有项目
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                    v-model="search"
+                                    label="输入相关信息查找项目"
+                                    single-line
+                                    hide-details
+                            ></v-text-field>
+                        </v-card-title>
+                        <v-data-table
+                                :headers="headers"
+                                :items="programList"
+                                sort-by="calories"
+                                class="elevation-1"
+                                :search="search"
+                                loading-text="数据加载中……请耐心等待"
+                        >
+
+                            <template v-slot:item.action="{ item }">
+                                <v-btn color="teal" @click="goToAuthoritySelectVolunteer" outlined>选择志愿者</v-btn>
+                            </template>
+
+                        </v-data-table>
+                    </v-card>
+                </v-container>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
     export default {
         name: "authority-table",
 
-        data() {
-            return {
-                search:'',
-                allPrograms:[],
-                headers: [
-                    {text: '项目名称', value: ''},
-                    {text: '药物', value: ''},
-                    {text: '适应症', value: ''},
-                    {text: '招募人数', value: ''},
-                    {text: '起始日期', value: ''},
-                    {text: '截止日期', value: ''},
-                    {text: '申请状态', value: ''},
-                ],
-            }
-        },
+        data: () => ({
+            dialog: false,
+            search:'',
+            headers: [
+                { text: '项目ID', value: 'id' },
+                { text: '项目名称', value: 'programname' },
+                { text: '药物', value: 'drugname' },
+                { text: '疾病类型', value: 'diseasetypeId' },
+                { text: '适应症', value: 'adaptationdisease' },
+                { text: '招募人数', value: 'totalnumberpeople' },
+                { text: '起始日期', value: 'starttime' },
+                { text: '截止日期', value: 'endtime' },
+                { text: '项目详情', value: 'programdetail' },
+                { text: '我要报名', value: 'action', sortable: false },
+            ],
+            programList: [
+            ],
+            programArr: [
+            ],
+            editedIndex: -1,
+            editedItem: {
+                id: 0,
+            },
+            defaultItem: {
+                id:0,
+            },
+        }),
+
         filters: {
+
+        }, mounted() {
+            this.getAllMyPrograms();
+
+        },
+        methods: {
             // 数字 转化为状态
             IndexToDisease(value) {
 
@@ -117,12 +146,7 @@
                 let binding = bindings.get(value);
                 return binding[0];
 
-            }
-        }, mounted() {
-            this.getAllMyPrograms();
-
-        },
-        methods: {
+            },
             // 只传 username
 
             getAllMyPrograms : function ()  {
@@ -157,4 +181,18 @@
 
 <style scoped>
 
+
+    .auth-table-background {
+        background: #43C6AC;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #F8FFAE, #43C6AC);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #F8FFAE, #43C6AC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        width:100%;
+        height: 100%;
+        color:teal;
+    }
+    a {
+        color: white ;
+        text-decoration: none;
+        font-weight: bold;
+    }
 </style>

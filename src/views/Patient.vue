@@ -137,13 +137,7 @@
             this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
                 console.log(response.data);
                 this.programList=response.data;
-                console.log(this.programList.length);
-                this.programList.forEach(element => console.log(element.diseasetypeId=this.IndexToDisease(element.diseasetypeId)));
-                var i=0;
-                for(i;i<this.programList.length;i++)
-                {
-                    console.log(this.programList[i].diseasetypeId);
-                }
+                this.programList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
 
             });
 
