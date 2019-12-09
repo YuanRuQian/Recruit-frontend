@@ -1,15 +1,26 @@
 <template>
     <v-container fluid>
+        <v-card>
+            <v-card-title>
+                患者受试者项目一览
+                <v-spacer></v-spacer>
+                <v-text-field
+                        v-model="search"
+                        label="输入相关信息查找项目"
+                        single-line
+                        hide-details
+                ></v-text-field>
+            </v-card-title>
     <v-data-table
             :headers="headers"
             :items="programList"
             sort-by="calories"
             class="elevation-1"
+            :search="search"
             loading-text="数据加载中……请耐心等待"
     >
         <template v-slot:top>
             <v-toolbar flat color="white">
-                <v-toolbar-title>健康受试者项目一览</v-toolbar-title>
                 <v-dialog v-model="dialog" max-width="500px">
                     <v-card>
                         <v-card-title>
@@ -64,6 +75,7 @@
         </template>
 
     </v-data-table>
+        </v-card>
     </v-container>
 </template>
 
@@ -75,6 +87,7 @@
         name: 'menu',
         data: () => ({
             dialog: false,
+            search:'',
             headers: [
                 { text: '项目ID', value: 'id' },
                 { text: '项目名称', value: 'programname' },
@@ -112,8 +125,13 @@
                 this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
                     console.log(response.data);
                     this.programList=response.data;
-                    this.programList.forEach(element=> console.log(element.diseasetypeId=this.IndexToDisease(element.diseasetypeId)))
-
+                    console.log(this.programList.length);
+                    this.programList.forEach(element => console.log(element.diseasetypeId=this.IndexToDisease(element.diseasetypeId)));
+                    var i=0;
+                    for(i;i<this.programList.length;i++)
+                    {
+                        console.log(this.programList[i].diseasetypeId);
+                    }
 
                 });
 
@@ -224,5 +242,9 @@
     }
 </script>
 
-
+<style>
+    .v-toolbar-title {
+        color:gray;
+    }
+</style>
 

@@ -5,25 +5,84 @@
                     class="fill-height patient-background"
                     fluid
             >
-                <v-card class="patient-data-table">
-                    <v-card-title>
-                        患者受试者项目一览
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                                v-model="search"
-                                label="Search"
-                                single-line
-                                hide-details
-                        ></v-text-field>
-                    </v-card-title>
-                    <v-data-table
-                            :headers="headers"
-                            :items="info"
-                            class="elevation-1"
-                            loading loading-text="数据加载中……请耐心等待"
-                    >
-                    </v-data-table>
-                </v-card>
+                <v-container fluid>
+                    <v-card>
+                        <v-card-title>
+                            患者受试者项目一览
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                    v-model="search"
+                                    label="输入相关信息查找项目"
+                                    single-line
+                                    hide-details
+                            ></v-text-field>
+                        </v-card-title>
+                        <v-data-table
+                                :headers="headers"
+                                :items="programList"
+                                sort-by="calories"
+                                class="elevation-1"
+                                :search="search"
+                                loading-text="数据加载中……请耐心等待"
+                        >
+                            <template v-slot:top>
+                                <v-toolbar flat color="white">
+                                    <v-dialog v-model="dialog" max-width="500px">
+                                        <v-card>
+                                            <v-card-title>
+                                                <span class="headline">我要报名</span>
+                                            </v-card-title>
+                                            <v-card-text>
+                                                <v-container>
+                                                    <!--             modal 中的内容                   -->
+                                                    <v-row>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly   v-model="editedItem.id" label="项目ID"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly   v-model="editedItem.programname" label="项目名称"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly   v-model="editedItem.drugname" label="药物"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly   v-model="editedItem.diseasetypeId" label="疾病类型"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly   v-model="editedItem.adaptationdisease" label="适应症"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly   v-model="editedItem.totalnumberpeople" label="招募人数"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly   v-model="editedItem.starttime" label="起始日期"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly  v-model="editedItem.endtime" label="截止日期"></v-text-field>
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="4">
+                                                            <v-text-field readonly  v-model="editedItem.programdetail" label="项目详情"></v-text-field>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-card-text>
+
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn color="teal" outlined @click="close">取消</v-btn>
+                                                <v-btn color="teal" outlined @click="save">确认</v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </v-dialog>
+                                </v-toolbar>
+                            </template>
+                            <template v-slot:item.action="{ item }">
+                                <v-btn color="teal"    @click="editItem(item)" outlined>报名</v-btn>
+                            </template>
+
+                        </v-data-table>
+                    </v-card>
+                </v-container>
             </v-container>
         </v-content>
     </v-app>
@@ -31,22 +90,60 @@
 
 <script>
     export default {
-        name: "patient",
-        data () {
-            return {
-                search: '',
-                info:[],
-                headers: [
-                    { text: '项目名称', value: 'info.' },
-                    { text: '药物', value: '' },
-                    { text: '适应症', value: '' },
-                    { text: '招募人数', value: '' },
-                    { text: '起始日期', value: '' },
-                    { text: '截止日期', value: '' },
-                ],
-            }
+        name: 'patient',
+        data: () => ({
+            dialog: false,
+            search:'',
+            headers: [
+                { text: '项目ID', value: 'id' },
+                { text: '项目名称', value: 'programname' },
+                { text: '药物', value: 'drugname' },
+                { text: '疾病类型', value: 'diseasetypeId' },
+                { text: '适应症', value: 'adaptationdisease' },
+                { text: '招募人数', value: 'totalnumberpeople' },
+                { text: '起始日期', value: 'starttime' },
+                { text: '截止日期', value: 'endtime' },
+                { text: '项目详情', value: 'programdetail' },
+                { text: '我要报名', value: 'action', sortable: false },
+            ],
+            programList: [
+            ],
+            programArr: [
+            ],
+            editedIndex: -1,
+            editedItem: {
+                id: 0,
+            },
+            defaultItem: {
+                id:0,
+            },
+        }),
+
+
+        watch: {
+            dialog (val) {
+                val || this.close()
+            },
         },
-        filters: {
+
+        mounted () {
+
+            this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
+                console.log(response.data);
+                this.programList=response.data;
+                console.log(this.programList.length);
+                this.programList.forEach(element => console.log(element.diseasetypeId=this.IndexToDisease(element.diseasetypeId)));
+                var i=0;
+                for(i;i<this.programList.length;i++)
+                {
+                    console.log(this.programList[i].diseasetypeId);
+                }
+
+            });
+
+        },
+
+        methods: {
             IndexToDisease (value){
 
                 const bindings = new Map([
@@ -114,35 +211,42 @@
                 let binding = bindings.get(value);
                 return binding[0];
 
-            }
-        },mounted() {
-            this.ProgramForPatient();
+            },
+            editItem (item) {
+                this.editedIndex = this.programList.indexOf(item);
+                this.editedItem = Object.assign({}, item);
+                this.dialog = true
+            },
 
-        },
-        methods: {
-            ProgramForPatient :function() {
-                this.axios.post('http://47.100.227.73:8080/recruit/api/login',
-                            {
-                                username: this.$store.state.currentUser,
-                            }
-                    ).then((response) => {
-                    console.log(response);
-                    //  @return 0发布失败 1发布成功
-                    switch (parseInt(response)) {
-                        case 0 : alert('发布失败 TAT');
-                            break;
-                        case 1 : alert('发布成功！');
-                            break;
-                        default : alert('哎呀！不知道哪里出错了 QAQ');
-                    }
+
+            close () {
+                this.dialog = false;
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedIndex = -1
+                }, 300)
+            },
+
+            save () {
+                if (this.editedIndex > -1) {
+                    Object.assign(this.programList[this.editedIndex], this.editedItem)
+                } else {
+                    this.programList.push(this.editedItem)
+                }
+                this.axios.post('',
+                    {
+                        id: this.editedItem.id,
+                        username:this.$store.state.currentUser,
+
+                    }).then((response) => {
+                    console.log(response.data);
+                    alert('恭喜您报名成功!');
                 });
-
-
-
-            }
-        }
+                this.close()
+            },
+        },
     }
-</script>
+    </script>
 
 
 <style scoped>
