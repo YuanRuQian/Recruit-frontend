@@ -8,7 +8,7 @@
                 <v-layout row>
                     <v-flex md4>
                         <v-card class="mx-auto" max-width="344" raised>
-                            <v-img src="../assets/healthy.jpg" height="200px"></v-img>
+                            <v-img src="https://images.unsplash.com/photo-1552196563-55cd4e45efb3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60" height="200px"></v-img>
                             <v-card-title>健康志愿者</v-card-title>
                             <v-card-subtitle>参与临床试验，推动世界医学进步</v-card-subtitle>
                             <v-card-actions>
@@ -48,7 +48,7 @@
                                         to="/patient"
                                         tag="v-btn"
                                 >
-                                <v-btn color="teal"  outlined>报名</v-btn>
+                                <v-btn color="teal" outlined>报名</v-btn>
                                 </router-link>
                             </v-card-actions>
 

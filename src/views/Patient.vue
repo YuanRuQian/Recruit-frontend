@@ -77,8 +77,9 @@
                                 </v-toolbar>
                             </template>
                             <template v-slot:item.action="{ item }">
-                                <v-btn color="teal"    @click="editItem(item)" outlined>报名</v-btn>
+                                <v-btn else color="teal" @click="editItem(item)" outlined>报名</v-btn>
                             </template>
+
 
                         </v-data-table>
                     </v-card>
@@ -119,7 +120,15 @@
             },
         }),
 
-
+        filters:{
+            ShowButtonText(value){
+                    if(value.type===true)
+                    {
+                        return '已经报名';
+                    }
+                      return '报名';
+            }
+        },
         watch: {
             dialog (val) {
                 val || this.close()
@@ -230,6 +239,8 @@
 
             },
             editItem (item) {
+
+
                 this.editedIndex = this.programList.indexOf(item);
                 this.editedItem = Object.assign({}, item);
                 this.dialog = true
@@ -245,29 +256,32 @@
             },
 
             save () {
-                if (this.editedIndex > -1) {
-                    Object.assign(this.programList[this.editedIndex], this.editedItem)
-                } else {
-                    this.programList.push(this.editedItem)
+
+                    if (this.editedIndex > -1) {
+                        Object.assign(this.programList[this.editedIndex], this.editedItem)
+                    } else {
+                        this.programList.push(this.editedItem)
+                    }
+
+                    // 如果未登陆 跳转登陆页面
+                    if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
+
+
+                    this.axios.post('http://47.100.227.73:8080/recruit/api/project/application',
+                        {
+                            programnumber_id: this.editedItem.id,
+                            username:this.$store.state.currentUser,
+
+                        }).then((response) => {
+
+                        if(response.data===true) {alert('恭喜您报名成功!')}
+                        else {alert('哪里出错了 QAQ')}
+                    });
+                    this.close();
                 }
 
-                // 如果未登陆 跳转登陆页面
-                if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
-
-
-                this.axios.post('http://47.100.227.73:8080/recruit/api/project/application',
-                    {
-                        programnumber_id: this.editedItem.id,
-                        username:this.$store.state.currentUser,
-
-                    }).then((response) => {
-
-                    if(response.data===true) {alert('恭喜您报名成功!')}
-                    else {alert('哪里出错了 QAQ')}
-                });
-                this.close()
             },
-        },
+
     }
     </script>
 
