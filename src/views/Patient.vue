@@ -76,10 +76,11 @@
                                     </v-dialog>
                                 </v-toolbar>
                             </template>
-                            <template v-slot:item.action="{ item }">
-                                <v-btn else color="teal" @click="editItem(item)" outlined>报名</v-btn>
-                            </template>
-
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="teal" outlined @click="close">取消</v-btn>
+                                <v-btn color="teal" outlined @click="save">确认</v-btn>
+                            </v-card-actions>
 
                         </v-data-table>
                     </v-card>

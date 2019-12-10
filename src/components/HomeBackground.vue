@@ -31,7 +31,7 @@
                                 raised
                         >
                             <v-img
-                                    src="../assets/patient.jpg"
+                                    src="https://cdn.pixabay.com/photo/2016/09/02/16/17/dentist-1639683_960_720.jpg"
                                     height="200px"
                             ></v-img>
 
@@ -66,7 +66,7 @@
                                 raised
                         >
                             <v-img
-                                    src="../assets/registration.jpg"
+                                    src="https://cdn.pixabay.com/photo/2015/05/24/06/13/medical-781422_960_720.jpg"
                                     height="200px"
                             ></v-img>
 

@@ -77,7 +77,10 @@
                                 </v-toolbar>
                             </template>
 
-                            <template v-slot:item.action="{ item }">
+                            <template v-slot:item.action="{ item }" v-if="item.type===true">
+                                <v-btn else color="teal" disabled="true" outlined>已报名</v-btn>
+                            </template>
+                            <template v-slot:item.action="{ item }" v-else>
                                 <v-btn else color="teal" @click="editItem(item)" outlined>报名</v-btn>
                             </template>
 
@@ -286,6 +289,9 @@
         width:100%;
         height: 100%;
         color:teal;
+    }
+    .v-btn {
+        width: ;
     }
     a {
         color: white ;
