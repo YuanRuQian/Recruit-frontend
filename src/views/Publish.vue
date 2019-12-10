@@ -186,6 +186,7 @@
                             console.log(response);
                             if(response.data===true) alert('发布成功！');
                             else alert('哎呀，有东西出错了 QAQ');
+                            this.$router.push({name:'authority-table'})
                     });
                 },
 

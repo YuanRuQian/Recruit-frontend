@@ -346,7 +346,7 @@
                         }
                     ).then((response) => {
                         console.log(response.data);
-                        this.$store.state.currentUser=this.username;
+                        this.$store.state.currentUser=this.username2;
                         this.$store.state.currentType=2;
                         this.$router.push({name:'publish'});
                     });

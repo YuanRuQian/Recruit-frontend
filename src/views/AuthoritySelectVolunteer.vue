@@ -19,7 +19,7 @@
                         </v-card-title>
                         <v-data-table
                                 :headers="headers"
-                                :items="volunteersList"
+                                :items="volunteerList"
                                 sort-by="diseasetypeId"
                                 class="elevation-1"
                                 :search="search"
@@ -37,7 +37,7 @@
                                                     <!--             modal 中的内容                   -->
                                                     <v-row>
                                                         <v-col cols="12" sm="6" md="4">
-                                                            <v-text-field readonly   v-model="editedItem.volunteernumber" label="志愿者编号"></v-text-field>
+                                                            <v-text-field readonly   v-model="editedItem.id" label="志愿者编号"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" sm="6" md="4">
                                                             <v-text-field readonly   v-model="editedItem.volunteername" label="志愿者姓名"></v-text-field>
@@ -49,39 +49,37 @@
                                                             <v-text-field readonly   v-model="editedItem.birthday" label="年龄"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" sm="6" md="4">
-                                                            <v-text-field readonly   v-model="editedItem.adaptationdisease" label="适应症"></v-text-field>
+                                                            <v-text-field readonly   v-model="editedItem.diseasetypeId" label="疾病类型"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" sm="6" md="4">
-                                                            <v-text-field readonly   v-model="editedItem.totalnumberpeople" label="招募人数"></v-text-field>
+                                                            <v-text-field readonly   v-model="editedItem.diseasedetail" label="患病详情"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" sm="6" md="4">
-                                                            <v-text-field readonly   v-model="editedItem.starttime" label="起始日期"></v-text-field>
+                                                            <v-text-field readonly   v-model="editedItem.address" label="地址"></v-text-field>
                                                         </v-col>
                                                         <v-col cols="12" sm="6" md="4">
-                                                            <v-text-field readonly  v-model="editedItem.endtime" label="截止日期"></v-text-field>
+                                                            <v-text-field readonly   v-model="editedItem.applystate" label="申请状态"></v-text-field>
                                                         </v-col>
-                                                        <v-col cols="12" sm="6" md="4">
-                                                            <v-text-field readonly  v-model="editedItem.programdetail" label="项目详情"></v-text-field>
-                                                        </v-col>
+
+
                                                     </v-row>
                                                 </v-container>
                                             </v-card-text>
 
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
-                                                <v-btn color="teal" outlined @click="close">取消</v-btn>
-                                                <v-btn color="teal" outlined @click="save">确认</v-btn>
+                                                <v-btn color="teal" outlined @click="close">关闭</v-btn>
+                                                <v-btn color="teal" outlined @click="save">批准</v-btn>
+                                                <v-btn color="teal" outlined @click="save2">不批准</v-btn>
                                             </v-card-actions>
                                         </v-card>
                                     </v-dialog>
                                 </v-toolbar>
                             </template>
-                            <template v-slot:item.action="{ item }" v-if="item.state===true">
-                                <v-btn else color="teal" disabled="true" outlined>已报名</v-btn>
+                            <template v-slot:item.action="{ item }">
+                                <v-btn color="teal" @click="editItem(item)" outlined>管理</v-btn>
                             </template>
-                            <template v-slot:item.action="{ item }" v-else>
-                                <v-btn else color="teal" @click="editItem(item)" outlined>报名</v-btn>
-                            </template>
+
 
                         </v-data-table>
                     </v-card>
@@ -96,20 +94,31 @@
 <script>
     export default {
         name: "select",
+        filters:{
+            filter1:function (value) {
+                if(value===0){
+                    return "未审核";
+                }else if (value === 1){
+                    return "审核通过";
+                }else {
+                    return"审核未通过";
+                }
+            }
+        },
         data () {
             return {
                 singleSelect: false,
-                volunteersList:[],
+                temp:[],
                 ApprovalBindings : ['未审批','审批通过','审批未通过'],
                 headers: [
-                    { text: '志愿者编号', value: 'volunteernumber' },
+                    { text: '志愿者编号', value: 'id' },
                     { text: '志愿者姓名', value: 'volunteername' },
                     { text: '性别', value: 'sex' },
                     { text: '年龄', value: 'birthday' },
                     { text: '疾病类型', value: 'diseasetypeId' },
-                    { text: '患病详情', value: 'diseasedetial' },
+                    { text: '患病详情', value: 'diseasedetail' },
                     { text: '地址', value: 'address' },
-                    { text: '申请状态', value: 'status' },
+                    { text: '申请状态', value: 'applystate' },
                     { text: '批准', value: 'action', sortable: false },
                 ],
                 volunteerList :[],
@@ -131,14 +140,40 @@
         mounted() {
             this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                 {programnumberId:this.$route.params.programid}).then((response) => {
-                console.log(response.data);
-                this.volunteersList=response.data;
-                this.volunteersList.forEach(element =>element.birthday=this.IndexToDisease(element.birthday));
-                this.programList.forEach(element =>element.diseasetypeId=this.birthdayCalculator(element.diseasetypeId));
-            });
+                var tempdata = response.data;
+                var _this = this;
+                tempdata.forEach(function (value){
+                    var type = value.applystate;
+                    var list = value.tblvolunteer;
+                    list['applystate'] = type;
+                    _this.temp.push(list);
+                });
+
+
+                this.volunteerList = this.temp;
+                console.log('volun');
+                console.log(this.volunteerList);
+                console.log(this.volunteerList[0].birthday);
+
+                this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
+                this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
+                this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
+
+
+                });
         },
 
         methods : {
+            IndexToState(value)
+            {
+                const bindings = new Map([
+                    [0,['未审核']],
+                    [1,['审核通过']],
+                    [2,['审核未通过']]
+                ]);
+                const binding = bindings.get(value);
+                return binding[0];
+            },
             IndexToDisease (value){
 
                 const bindings = new Map([
@@ -209,45 +244,124 @@
             },
 
             birthdayCalculator :function (dob) {
-                var diff_ms = Date.now() - dob.getTime();
-                var age_dt = new Date(diff_ms);
-                return Math.abs(age_dt.getUTCFullYear() - 1970);
+                var year = dob.substring(0,4);
+                year = parseInt(year);
+                var d = new Date();
+                var this_year = d.getFullYear();
+                return (this_year-year);
+
             },
 
+
             editItem (item) {
-                this.editedIndex = this.programList.indexOf(item);
+                this.editedIndex = this.volunteerList.indexOf(item);
                 this.editedItem = Object.assign({}, item);
-                this.dialog = true
+                this.dialog = true;
             },
 
 
             close () {
+
                 this.dialog = false;
                 setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
+                    this.editedItem = Object.assign({}, this.defaultItem);
+                    this.editedIndex = -1;
                 }, 300)
             },
 
             save () {
                 if (this.editedIndex > -1) {
-                    Object.assign(this.programList[this.editedIndex], this.editedItem)
+                    Object.assign(this.volunteerList[this.editedIndex], this.editedItem)
                 } else {
-                    this.programList.push(this.editedItem)
+                    this.volunteerList.push(this.editedItem)
                 }
 
 
                     this.axios.post('http://47.100.227.73:8080/recruit/api/project/filter',
                         {
                             programnumberId:this.$route.params.programid,
-                            volunteernumberId: this.editedItem.volunteernumber,
+                            volunteernumberId: this.editedItem.id,
                             applystate:1,
 
                         }).then((response) => {
-                        if(response===true) alert('恭喜您，选择提交成功!');
+                        if(response.data===true) alert('恭喜您，批准成功!');
                         else alert('选择提交失败……');
-                        this.$router.go(-1);
                     });
+
+
+                // 刷新页面
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
+                    {programnumberId:this.$route.params.programid}).then((response) => {
+                    var tempdata = response.data;
+                    var _this = this;
+                    tempdata.forEach(function (value){
+                        var type = value.applystate;
+                        var list = value.tblvolunteer;
+                        list['applystate'] = type;
+                        _this.temp.push(list);
+                    });
+
+
+                    this.volunteerList = this.temp;
+                    console.log('volun');
+                    console.log(this.volunteerList);
+                    console.log(this.volunteerList[0].birthday);
+
+                    this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
+                    this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
+                    this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
+
+
+                });
+
+                this.close()
+            },
+            save2 () {
+                if (this.editedIndex > -1) {
+                    Object.assign(this.volunteerList[this.editedIndex], this.editedItem)
+                } else {
+                    this.volunteerList.push(this.editedItem)
+                }
+
+
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/filter',
+                    {
+                        programnumberId:this.$route.params.programid,
+                        volunteernumberId: this.editedItem.id,
+                        applystate:2,
+
+                    }).then((response) => {
+                    if(response.data===true) alert('恭喜您，操作成功!');
+                    else alert('选择提交失败……');
+                });
+
+
+
+                // 刷新页面
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
+                    {programnumberId:this.$route.params.programid}).then((response) => {
+                    var tempdata = response.data;
+                    var _this = this;
+                    tempdata.forEach(function (value){
+                        var type = value.applystate;
+                        var list = value.tblvolunteer;
+                        list['applystate'] = type;
+                        _this.temp.push(list);
+                    });
+
+
+                    this.volunteerList = this.temp;
+                    console.log('volun');
+                    console.log(this.volunteerList);
+                    console.log(this.volunteerList[0].birthday);
+
+                    this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
+                    this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
+                    this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
+
+
+                });
+
 
                 this.close()
             },
