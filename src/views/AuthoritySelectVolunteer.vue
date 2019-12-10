@@ -140,6 +140,7 @@
         mounted() {
             this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                 {programnumberId:this.$route.params.programid}).then((response) => {
+                this.temp=[];
                 var tempdata = response.data;
                 var _this = this;
                 tempdata.forEach(function (value){
@@ -151,9 +152,9 @@
 
 
                 this.volunteerList = this.temp;
-                console.log('volun');
+
                 console.log(this.volunteerList);
-                console.log(this.volunteerList[0].birthday);
+
 
                 this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
                 this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
@@ -275,9 +276,7 @@
                 } else {
                     this.volunteerList.push(this.editedItem)
                 }
-
-
-                    this.axios.post('http://47.100.227.73:8080/recruit/api/project/filter',
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/filter',
                         {
                             programnumberId:this.$route.params.programid,
                             volunteernumberId: this.editedItem.id,
@@ -287,12 +286,13 @@
                         if(response.data===true) alert('恭喜您，批准成功!');
                         else alert('选择提交失败……');
                     });
+                this.close();
 
-
-                // 刷新页面
+                //刷新数据
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                     {programnumberId:this.$route.params.programid}).then((response) => {
                     this.temp=[];
+                    this.volunteerList=[];
                     var tempdata = response.data;
                     var _this = this;
                     tempdata.forEach(function (value){
@@ -304,9 +304,9 @@
 
 
                     this.volunteerList = this.temp;
-                    console.log('volun');
-                    console.log(this.volunteerList);
-                    console.log(this.volunteerList[0].birthday);
+
+                    console.log('数据刷新…… ');
+
 
                     this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
                     this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
@@ -315,7 +315,6 @@
 
                 });
 
-                this.close()
             },
             save2 () {
                 if (this.editedIndex > -1) {
@@ -323,8 +322,6 @@
                 } else {
                     this.volunteerList.push(this.editedItem)
                 }
-
-
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/filter',
                     {
                         programnumberId:this.$route.params.programid,
@@ -335,13 +332,13 @@
                     if(response.data===true) alert('恭喜您，操作成功!');
                     else alert('选择提交失败……');
                 });
+                this.close();
 
-
-
-                // 刷新页面
+                //刷新数据
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                     {programnumberId:this.$route.params.programid}).then((response) => {
-                        this.temp=[];
+                    this.temp=[];
+                    this.volunteerList=[];
                     var tempdata = response.data;
                     var _this = this;
                     tempdata.forEach(function (value){
@@ -353,9 +350,9 @@
 
 
                     this.volunteerList = this.temp;
-                    console.log('volun');
-                    console.log(this.volunteerList);
-                    console.log(this.volunteerList[0].birthday);
+
+                    console.log('数据刷新…… ');
+
 
                     this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
                     this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
@@ -363,9 +360,6 @@
 
 
                 });
-
-
-                this.close()
             },
         },
     }
