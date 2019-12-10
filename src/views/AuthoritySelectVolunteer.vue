@@ -293,9 +293,9 @@
                     {programnumberId:this.$route.params.programid}).then((response) => {
                     this.temp=[];
                     this.volunteerList=[];
-                    var tempdata = response.data;
+                    var tempdata2 = response.data;
                     var _this = this;
-                    tempdata.forEach(function (value){
+                    tempdata2.forEach(function (value){
                         var type = value.applystate;
                         var list = value.tblvolunteer;
                         list['applystate'] = type;
@@ -339,9 +339,9 @@
                     {programnumberId:this.$route.params.programid}).then((response) => {
                     this.temp=[];
                     this.volunteerList=[];
-                    var tempdata = response.data;
+                    var tempdata3 = response.data;
                     var _this = this;
-                    tempdata.forEach(function (value){
+                    tempdata3.forEach(function (value){
                         var type = value.applystate;
                         var list = value.tblvolunteer;
                         list['applystate'] = type;
