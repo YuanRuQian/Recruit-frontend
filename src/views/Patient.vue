@@ -20,7 +20,7 @@
                         <v-data-table
                                 :headers="headers"
                                 :items="programList"
-                                sort-by="calories"
+                                sort-by="diseasetypeId"
                                 class="elevation-1"
                                 :search="search"
                                 loading-text="数据加载中……请耐心等待"
