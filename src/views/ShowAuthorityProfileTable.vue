@@ -80,8 +80,7 @@
             if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
 
             // 如果用户类型错误 跳转对应页面
-            if(this.$store.state.currentType===1) {this.$router.push({name:'volunteer-table'})}
-            if(this.$store.state.currentType===2) {this.$router.push({name:'volunteer-table'})}
+            if(this.$store.state.currentType===1 || this.$store.state.currentType===0) {this.$router.push({name:'volunteer-table'})}
 
             console.log(this.$store.state.currentUser)
 
