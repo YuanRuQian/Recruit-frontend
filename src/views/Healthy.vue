@@ -20,7 +20,7 @@
                         <v-data-table
                                 :headers="headers"
                                 :items="programList"
-                                sort-by="diseasetypeId"
+                                sort-by="calories"
                                 class="elevation-1"
                                 :search="search"
                                 loading-text="数据加载中……请耐心等待"
@@ -76,14 +76,9 @@
                                     </v-dialog>
                                 </v-toolbar>
                             </template>
-
-                            <template v-slot:item.action="{ item }" v-if="item.type===true">
-                                <v-btn else color="teal" disabled="true" outlined>已报名</v-btn>
+                            <template v-slot:item.action="{ item }">
+                                <v-btn color="teal"    @click="editItem(item)" outlined>{{item.type | filter1}}</v-btn>
                             </template>
-                            <template v-slot:item.action="{ item }" v-else>
-                                <v-btn else color="teal" @click="editItem(item)" outlined>报名</v-btn>
-                            </template>
-
 
                         </v-data-table>
                     </v-card>
@@ -152,20 +147,22 @@
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/getallbyvo',{username:this.$store.state.currentUser}).then((response) => {
                     console.log(response.data);
                     this.programList=response.data;
-                    this.programList.forEach(element =>
-                    {
-                        //报名的type为true 未报名的为null
-                        //如果报名了则不显示该项目
-                        if(element.type===true) this.programList.splice(this.programList.indexOf(element),1);
-                    });
-                    this.programList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
-
                 });
 
             }
 
         },
-
+        filters:{
+            filter1:function (value) {
+                if(value===false){
+                    return "报名";
+                }else if (value === true){
+                    return "已报名";
+                }else {
+                    return"报名";
+                }
+            }
+        },
         methods: {
             IndexToDisease (value){
 
@@ -231,14 +228,19 @@
 
                 ]);
 
-                let binding = bindings.get(value);
+                const binding = bindings.get(value);
                 return binding[0];
 
             },
             editItem (item) {
                 this.editedIndex = this.programList.indexOf(item);
                 this.editedItem = Object.assign({}, item);
-                this.dialog = true
+                if(item.type === true){
+                    this.dialog = false;
+                }
+                else {
+                    this.dialog = true;
+                }
             },
 
 
@@ -268,7 +270,15 @@
 
                     }).then((response) => {
 
-                    if(response.data===true) {alert('恭喜您报名成功!')}
+                    if(response.data===true) {
+
+                        this.axios.post('http://47.100.227.73:8080/recruit/api/project/getallbyvo',{username:this.$store.state.currentUser}).then((response) => {
+                            console.log(response.data);
+                            this.programList=response.data;
+                        });
+                        alert('恭喜您报名成功!');
+
+                    }
                     else {alert('哪里出错了 QAQ')}
                 });
                 this.close()
@@ -289,9 +299,6 @@
         width:100%;
         height: 100%;
         color:teal;
-    }
-    .v-btn {
-        width: ;
     }
     a {
         color: white ;

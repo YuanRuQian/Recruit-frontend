@@ -161,7 +161,7 @@
 
                 ]);
 
-                let binding = bindings.get(value);
+                const binding = bindings.get(value);
                 return binding[0];
 
             },

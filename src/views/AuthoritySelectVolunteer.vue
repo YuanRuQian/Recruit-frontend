@@ -76,10 +76,12 @@
                                     </v-dialog>
                                 </v-toolbar>
                             </template>
-                            <template v-slot:item.action="{ item }">
-                                <v-btn else color="teal" @click="editItem(item)" outlined>批准</v-btn>
+                            <template v-slot:item.action="{ item }" v-if="item.state===true">
+                                <v-btn else color="teal" disabled="true" outlined>已报名</v-btn>
                             </template>
-
+                            <template v-slot:item.action="{ item }" v-else>
+                                <v-btn else color="teal" @click="editItem(item)" outlined>报名</v-btn>
+                            </template>
 
                         </v-data-table>
                     </v-card>
@@ -127,7 +129,7 @@
             },
         },
         mounted() {
-            this.axios.post('http://47.100.227.73:8080/recruit/api/project/managevolunteers',
+            this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                 {programnumberId:this.$route.params.programid}).then((response) => {
                 console.log(response.data);
                 this.volunteersList=response.data;
@@ -201,7 +203,7 @@
 
                 ]);
 
-                let binding = bindings.get(value);
+                const binding = bindings.get(value);
                 return binding[0];
 
             },

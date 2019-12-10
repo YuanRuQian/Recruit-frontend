@@ -77,7 +77,7 @@
                     [1, ['审批通过']],
                     [2, ['审批未通过']]
                 ]);
-                let binding = bindings.get(value);
+                const binding = bindings.get(value);
                 return binding[0];
             },
             IndexToDisease(value) {
@@ -144,7 +144,7 @@
 
                 ]);
 
-                let binding = bindings.get(value);
+                const binding = bindings.get(value);
                 return binding[0];
 
             },
