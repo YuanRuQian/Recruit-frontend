@@ -292,6 +292,7 @@
                 // 刷新页面
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                     {programnumberId:this.$route.params.programid}).then((response) => {
+                    this.temp=[];
                     var tempdata = response.data;
                     var _this = this;
                     tempdata.forEach(function (value){
@@ -340,6 +341,7 @@
                 // 刷新页面
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                     {programnumberId:this.$route.params.programid}).then((response) => {
+                        this.temp=[];
                     var tempdata = response.data;
                     var _this = this;
                     tempdata.forEach(function (value){
