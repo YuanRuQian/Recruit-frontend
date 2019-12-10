@@ -172,7 +172,7 @@
                                     v-model="tel2"
                                     prepend-icon="mdi-phone"
                                     type="text"
-                                    :rules="[() => !!tel || '请填写完整信息!']"
+                                    :rules="[() => !!tel2 || '请填写完整信息!']"
                                     :error-messages="errorMessages"
                                     required
                             />
@@ -334,12 +334,15 @@
                 },
 
                 AuthorityRegister: function () {
-                    this.axios.get('http://47.100.227.73:8080/recruit/api/register/promulgator',
+                    this.axios.post('http://47.100.227.73:8080/recruit/api/register/promulgator',
                         {
-                            userName: this.username2,
-                            userPwd: this.password2,
-                            Organization: this.authority,
-                            Tel: this.tel2,
+                            username: this.username2,
+                            userpwd: this.password2,
+                            tblpromulgator:{
+                                organization: this.organization,
+                                tel: this.tel2,
+                            }
+
                         }
                     ).then((response) => {
                         console.log(response.data);
