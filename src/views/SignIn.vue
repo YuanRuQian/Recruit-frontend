@@ -2,7 +2,7 @@
     <v-container class="sign-in-background" fluid>
         <v-card class="general-frame">
             <v-toolbar flat color="teal" dark>
-                <v-toolbar-title>用户登陆</v-toolbar-title>
+                <v-toolbar-title>用户登录</v-toolbar-title>
             </v-toolbar>
 
             <v-card class="tab-card">
@@ -34,7 +34,7 @@
                 <v-card-actions>
                     <v-spacer />
                     {{prompt}}
-                    <v-btn color="primary" @click="UserLogIn">登陆</v-btn>
+                    <v-btn color="primary" @click="UserLogIn">登录</v-btn>
                 </v-card-actions>
             </v-card>
 
@@ -65,10 +65,10 @@
                         userpwd: this.password,
                     }).then((response) => {
                     console.log(response.data);
-                    // 'res':(登陆成功与否 0不存在该用户 1存在该用户密码错误 2登陆成功),
-                    // 'type':(登录人员类型（如果登陆失败,type为空,否则type有值 其中 0病人 1健康人 2机构）)
-                    // prompt 用于记录登陆成功与否/登陆人员类型 将显示在弹窗里
-                    // 若登陆成功，跳转到用户身份对应的页面
+                    // 'res':(登录成功与否 0不存在该用户 1存在该用户密码错误 2登录成功),
+                    // 'type':(登录人员类型（如果登录失败,type为空,否则type有值 其中 0病人 1健康人 2机构）)
+                    // prompt 用于记录登录成功与否/登录人员类型 将显示在弹窗里
+                    // 若登录成功，跳转到用户身份对应的页面
                     if(parseInt(response.data.res)===2)
                     {
                         this.$store.state.currentUser = this.username;

@@ -76,7 +76,7 @@
         }, mounted() {
 
 
-            // 如果未登陆 跳转登陆页面
+            // 如果未登录 跳转登录页面
             if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
 
             // 如果用户类型错误 跳转对应页面

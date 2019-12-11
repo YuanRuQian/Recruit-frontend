@@ -128,7 +128,7 @@
         },
 
         mounted () {
-            // 如果未登陆 显示全部项目 否则 仅显示未报名的项目
+            // 如果未登录 显示全部项目 否则 仅显示未报名的项目
             if(this.$store.state.currentUser===null)
             {
                 this.axios.get('http://47.100.227.73:8080/recruit/api/project/getall').then((response) => {
@@ -259,7 +259,7 @@
                     this.programList.push(this.editedItem)
                 }
 
-                // 如果未登陆 跳转登陆页面
+                // 如果未登录 跳转登录页面
                 if(this.$store.state.currentUser===null) {this.$router.push({name:'sign-in'})}
 
 
