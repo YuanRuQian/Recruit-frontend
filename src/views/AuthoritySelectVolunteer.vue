@@ -138,33 +138,38 @@
             },
         },
         mounted() {
-            this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
-                {programnumberId:this.$route.params.programid}).then((response) => {
-                this.temp=[];
-                var tempdata = response.data;
-                var _this = this;
-                tempdata.forEach(function (value){
-                    var type = value.applystate;
-                    var list = value.tblvolunteer;
-                    list['applystate'] = type;
-                    _this.temp.push(list);
-                });
 
+           this.refreshData();
 
-                this.volunteerList = this.temp;
-
-                console.log(this.volunteerList);
-
-
-                this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
-                this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
-                this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
-
-
-                });
         },
 
         methods : {
+            refreshData: function () {
+                this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
+                    {programnumberId:this.$route.params.programid}).then((response) => {
+                    this.temp=[];
+                    var tempdata = response.data;
+                    var _this = this;
+                    tempdata.forEach(function (value){
+                        var type = value.applystate;
+                        var list = value.tblvolunteer;
+                        list['applystate'] = type;
+                        _this.temp.push(list);
+                    });
+
+
+                    this.volunteerList = this.temp;
+
+                    console.log(this.volunteerList);
+
+
+                    this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
+                    this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
+                    this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
+                    tempdata = null;
+
+                });
+            },
             IndexToState(value)
             {
                 const bindings = new Map([
@@ -287,33 +292,8 @@
                         else alert('选择提交失败……');
                     });
                 this.close();
-
-                //刷新数据
-                this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
-                    {programnumberId:this.$route.params.programid}).then((response) => {
-                    this.temp=[];
-                    this.volunteerList=[];
-                    var tempdata2 = response.data;
-                    var _this = this;
-                    tempdata2.forEach(function (value){
-                        var type = value.applystate;
-                        var list = value.tblvolunteer;
-                        list['applystate'] = type;
-                        _this.temp.push(list);
-                    });
-
-
-                    this.volunteerList = this.temp;
-
-                    console.log('数据刷新…… ');
-
-
-                    this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
-                    this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
-                    this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
-
-
-                });
+                // 刷新数据
+                this.refreshData();
 
             },
             save2 () {
@@ -333,33 +313,8 @@
                     else alert('选择提交失败……');
                 });
                 this.close();
-
-                //刷新数据
-                this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
-                    {programnumberId:this.$route.params.programid}).then((response) => {
-                    this.temp=[];
-                    this.volunteerList=[];
-                    var tempdata3 = response.data;
-                    var _this = this;
-                    tempdata3.forEach(function (value){
-                        var type = value.applystate;
-                        var list = value.tblvolunteer;
-                        list['applystate'] = type;
-                        _this.temp.push(list);
-                    });
-
-
-                    this.volunteerList = this.temp;
-
-                    console.log('数据刷新…… ');
-
-
-                    this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
-                    this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
-                    this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
-
-
-                });
+                // 刷新数据
+                this.refreshData();
             },
         },
     }
