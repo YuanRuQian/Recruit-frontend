@@ -31,6 +31,17 @@
                                     required
                             />
                             <v-text-field
+                                    id="password"
+                                    label="密码"
+                                    ref="password"
+                                    v-model="password"
+                                    prepend-icon="mdi-lock"
+                                    type="password"
+                                    :rules="[() => !!password || '请填写完整信息!']"
+                                    :error-messages="errorMessages"
+                                    required
+                            />
+                            <v-text-field
                                     ref="realname"
                                     v-model="realname"
                                     id="realname"
@@ -115,23 +126,10 @@
                                     :error-messages="errorMessages"
                                     required
                             />
-
-                            <v-text-field
-                                    id="password"
-                                    label="密码"
-                                    ref="password"
-                                    v-model="password"
-                                    prepend-icon="mdi-lock"
-                                    type="password"
-                                    :rules="[() => !!password || '请填写完整信息!']"
-                                    :error-messages="errorMessages"
-                                    required
-                            />
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer />
-<!--                        {{birthday}}-->
                         <v-btn color="primary" @click="UserRegister">注册</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -156,6 +154,17 @@
                                     required
                             />
                             <v-text-field
+                                    id="password2"
+                                    label="密码"
+                                    ref="password2"
+                                    v-model="password2"
+                                    prepend-icon="mdi-lock"
+                                    type="password"
+                                    :rules="[() => !!password2 || '请填写完整信息!']"
+                                    :error-messages="errorMessages"
+                                    required
+                            />
+                            <v-text-field
                                     ref="organization"
                                     v-model="organization"
                                     label="机构名称"
@@ -176,17 +185,7 @@
                                     :error-messages="errorMessages"
                                     required
                             />
-                            <v-text-field
-                                    id="password2"
-                                    label="密码"
-                                    ref="password2"
-                                    v-model="password2"
-                                    prepend-icon="mdi-lock"
-                                    type="password"
-                                    :rules="[() => !!password2 || '请填写完整信息!']"
-                                    :error-messages="errorMessages"
-                                    required
-                            />
+
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
