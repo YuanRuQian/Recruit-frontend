@@ -1,14 +1,12 @@
 <template>
-    <v-app id="inspire"  >
+    <v-app id="inspire">
         <v-content>
-            <v-container
-                    class="fill-height select-background"
-                    fluid
-            >
+            <v-container class="fill-height select-background" fluid>
                 <v-container fluid>
                     <v-card>
                         <v-card-title>
                             项目申请者一览
+                            <v-btn color="teal" outlined @click="refreshData">刷新</v-btn>
                             <v-spacer></v-spacer>
                             <v-text-field
                                     v-model="search"
@@ -79,8 +77,6 @@
                             <template v-slot:item.action="{ item }">
                                 <v-btn color="teal" @click="editItem(item)" outlined>管理</v-btn>
                             </template>
-
-
                         </v-data-table>
                     </v-card>
                 </v-container>
@@ -109,6 +105,7 @@
             return {
                 singleSelect: false,
                 temp:[],
+
                 ApprovalBindings : ['未审批','审批通过','审批未通过'],
                 headers: [
                     { text: '志愿者编号', value: 'id' },
@@ -138,36 +135,35 @@
             },
         },
         mounted() {
-
            this.refreshData();
-
         },
 
         methods : {
+
+            // 刷新数据
             refreshData: function () {
                 this.axios.post('http://47.100.227.73:8080/recruit/api/project/manageVolunteers',
                     {programnumberId:this.$route.params.programid}).then((response) => {
-                    this.temp=[];
+                    this.volunteerList = [];
                     var tempdata = response.data;
                     var _this = this;
                     tempdata.forEach(function (value){
+                        console.log(value);
                         var type = value.applystate;
                         var list = value.tblvolunteer;
                         list['applystate'] = type;
                         _this.temp.push(list);
+                        list = null;
+                        type = null;
                     });
-
-
-                    this.volunteerList = this.temp;
-
-                    console.log(this.volunteerList);
-
-
+                    this.volunteerList = _this.temp;
+                    console.log('刷新数据……');
                     this.volunteerList.forEach(element =>element.applystate=this.IndexToState(element.applystate));
                     this.volunteerList.forEach(element =>element.birthday=this.birthdayCalculator(element.birthday));
                     this.volunteerList.forEach(element =>element.diseasetypeId=this.IndexToDisease(element.diseasetypeId));
-                    tempdata = null;
-
+                    console.log(this.volunteerList);
+                    tempdata = [];
+                    this.temp=[];
                 });
             },
             IndexToState(value)
@@ -243,7 +239,6 @@
                     ]
 
                 ]);
-
                 const binding = bindings.get(value);
                 return binding[0];
 
@@ -266,8 +261,8 @@
             },
 
 
-            close () {
 
+            close () {
                 this.dialog = false;
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem);
@@ -288,7 +283,7 @@
                             applystate:1,
 
                         }).then((response) => {
-                        if(response.data===true) alert('恭喜您，批准成功!');
+                        if(response.data) alert('恭喜您，批准成功!');
                         else alert('选择提交失败……');
                     });
                 this.close();
@@ -296,6 +291,7 @@
                 this.refreshData();
 
             },
+
             save2 () {
                 if (this.editedIndex > -1) {
                     Object.assign(this.volunteerList[this.editedIndex], this.editedItem)
@@ -309,13 +305,14 @@
                         applystate:2,
 
                     }).then((response) => {
-                    if(response.data===true) alert('恭喜您，操作成功!');
+                    if(response.data) alert('恭喜您，操作成功!');
                     else alert('选择提交失败……');
                 });
                 this.close();
                 // 刷新数据
                 this.refreshData();
             },
+
         },
     }
 </script>
