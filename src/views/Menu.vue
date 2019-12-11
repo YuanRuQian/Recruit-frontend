@@ -12,8 +12,7 @@
         name: 'menu',
         data(){
             return {
-                // 开发文档
-                src:'https://github.com/YuanRuQian/Recruit-frontend/tree/final/src/assets/dev-docs.pdf'
+                src:'https://www.bitcoincash.org/bitcoin.pdf'
             }
         },
 
