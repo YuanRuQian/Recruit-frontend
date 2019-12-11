@@ -6,7 +6,7 @@
                     <v-card>
                         <v-card-title>
                             项目申请者一览
-                            <v-btn color="teal" outlined @click="refreshData">刷新</v-btn>
+
                             <v-spacer></v-spacer>
                             <v-text-field
                                     v-model="search"
@@ -285,10 +285,11 @@
                         }).then((response) => {
                         if(response.data) alert('恭喜您，批准成功!');
                         else alert('选择提交失败……');
+                    this.refreshData();
                     });
                 this.close();
                 // 刷新数据
-                this.refreshData();
+
 
             },
 
@@ -307,10 +308,11 @@
                     }).then((response) => {
                     if(response.data) alert('恭喜您，操作成功!');
                     else alert('选择提交失败……');
+                    this.refreshData();
                 });
                 this.close();
                 // 刷新数据
-                this.refreshData();
+
             },
 
         },
