@@ -77,7 +77,7 @@
             <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToMenu">开发文档</v-btn>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
             <div v-if="this.$store.state.currentUser===null">
-                <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToSignIn">登陆</v-btn>
+                <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToSignIn">登录</v-btn>
                 <v-btn color="teal darken-3" class="hidden-sm-and-down" @click="ToJoin">注册</v-btn>
             </div>
             <div v-else>
