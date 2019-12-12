@@ -12,7 +12,7 @@
         name: 'menu',
         data(){
             return {
-                src:'https://www.bitcoincash.org/bitcoin.pdf'
+                src:''
             }
         },
 
