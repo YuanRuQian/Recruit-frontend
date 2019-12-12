@@ -165,29 +165,54 @@
         },
         methods :
             {
+                // yyyy-mm-dd 类型 string 转换为 date
+                convertDateFromString:function (dateString) {
+                    return new Date(dateString);
+                },
+
+                //判断两个date类型的大小
+                isStartBeforeEnd:function(start,end){
+                    var s = this.convertDateFromString(start);
+                    var e = this.convertDateFromString(end);
+                    console.log(s);
+                    console.log(e);
+                    console.log(e-s);
+                    console.log((e-s)>0);
+                    return (e-s)>0
+                },
                 PublishProgram: function () {
 
-                    this.axios.post('http://47.100.227.73:8080/recruit/api/project/publish',
-                        {
-                            username: this.$store.state.currentUser,
-                            tblprogram:{
-                                programname : this.programName,
-                                state:0,
-                                // state 默认0 招募中 1 招募已经结束
-                                drugname:this.drugName,
-                                totalnumberpeople:this.TotalVolunteers,
-                                diseasetypeId: this.DiseaseToIndex(this.diseaseType),
-                                adaptationdisease:this.ApplicationDisease,
-                                starttime:this.start,
-                                endtime:this.end,
-                                programdetail:this.programDetails
-                            }
-                        }).then((response) => {
+                    // 判断开始时间是否先于结束时间
+                    // 如果不是 提示错误
+
+                    if(this.isStartBeforeEnd(this.start,this.end)===true)
+                    {
+                        this.axios.post('http://47.100.227.73:8080/recruit/api/project/publish',
+                            {
+                                username: this.$store.state.currentUser,
+                                tblprogram:{
+                                    programname : this.programName,
+                                    state:0,
+                                    // state 默认0 招募中 1 招募已经结束
+                                    drugname:this.drugName,
+                                    totalnumberpeople:this.TotalVolunteers,
+                                    diseasetypeId: this.DiseaseToIndex(this.diseaseType),
+                                    adaptationdisease:this.ApplicationDisease,
+                                    starttime:this.start,
+                                    endtime:this.end,
+                                    programdetail:this.programDetails
+                                }
+                            }).then((response) => {
                             console.log(response);
                             if(response.data===true) alert('发布成功！');
                             else alert('哎呀，有东西出错了 QAQ');
                             this.$router.push({name:'authority-table'})
-                    });
+                        });
+                    }
+                    else
+                    {
+                        alert('开始日期必须先于结束日期!');
+                    }
                 },
 
                 DiseaseToIndex (value){
